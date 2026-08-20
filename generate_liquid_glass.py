@@ -154,7 +154,7 @@ def prepare_glass_layers(wallpaper_path):
         (TERMINAL_X, TERMINAL_Y, TERMINAL_X + WIN_W, TERMINAL_Y + 450)
     )
     frosted_content = content_region.filter(ImageFilter.GaussianBlur(radius=4))
-    content_overlay = Image.new("RGBA", frosted_content.size, (255, 255, 255, 14))
+    content_overlay = Image.new("RGBA", frosted_content.size, (255, 255, 255, 7))
     frosted_content = _blend_overlay(frosted_content, content_overlay)
 
     # ---- Assemble frosted window (with rounded corners) ----
