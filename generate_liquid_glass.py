@@ -52,10 +52,10 @@ USERNAME = (
 
 # ---- Layout constants ----
 GIF_W, GIF_H     = 740, 520   # full canvas including margin
-WIN_X, WIN_Y     = 20, 25     # window top-left in canvas
-WIN_W            = 700        # window width (matches gifos terminal width)
+WIN_X, WIN_Y     = 1, 1     # window top-left in canvas
+WIN_W            = 738        # window width (matches gifos terminal width)
 TITLE_H          = 30         # macOS title bar height
-WIN_H            = TITLE_H + 450  # total window height (480)
+WIN_H            = TITLE_H + 480  # total window height (480)
 TERMINAL_X       = WIN_X      # gifos frame is pasted here
 TERMINAL_Y       = WIN_Y + TITLE_H
 CORNER_RADIUS    = 10
@@ -154,7 +154,7 @@ def prepare_glass_layers(wallpaper_path):
         (TERMINAL_X, TERMINAL_Y, TERMINAL_X + WIN_W, TERMINAL_Y + 450)
     )
     frosted_content = content_region.filter(ImageFilter.GaussianBlur(radius=4))
-    content_overlay = Image.new("RGBA", frosted_content.size, (255, 255, 255, 7))
+    content_overlay = Image.new("RGBA", frosted_content.size, (255, 255, 255, 1))
     frosted_content = _blend_overlay(frosted_content, content_overlay)
 
     # ---- Assemble frosted window (with rounded corners) ----
