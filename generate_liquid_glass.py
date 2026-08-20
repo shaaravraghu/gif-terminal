@@ -352,7 +352,7 @@ t.clone_frame(40)
 # Post-process frames → Liquid Glass effect
 # ============================================
 
-base_canvas, chrome = prepare_glass_layers("assets/macos_wallpaper.jpg")
+base_canvas, chrome = prepare_glass_layers("assets/Aurora.jpg")
 post_process_frames(base_canvas, chrome)
 
 # ============================================
