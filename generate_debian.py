@@ -178,9 +178,9 @@ def prepare_debian_layers(wallpaper_path):
     content_region = wallpaper_bg.crop((TERMINAL_X, TERMINAL_Y,
                                         TERMINAL_X + WIN_W, TERMINAL_Y + 450))
 
-    frosted_title   = _frost(title_region,   blur=6,  tint_rgba=(32, 32, 36, 220))
-    frosted_menu    = _frost(menu_region,    blur=4,  tint_rgba=(40, 40, 44, 215))
-    frosted_content = _frost(content_region, blur=8,  tint_rgba=(18, 18, 23, 215))
+    frosted_title   = _frost(title_region,   blur=6,  tint_rgba=(32, 32, 36, 120))
+    frosted_menu    = _frost(menu_region,    blur=4,  tint_rgba=(40, 40, 44, 120))
+    frosted_content = _frost(content_region, blur=8,  tint_rgba=(18, 18, 23, 120))
 
     # ── Assemble window with rounded corners ─────────────────────────────────
     window_img = Image.new("RGB", (WIN_W, WIN_H))
