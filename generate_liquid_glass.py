@@ -1,7 +1,7 @@
 import gifos
 import os
 import glob
-import requests
+from pathlib import Path
 from PIL import Image, ImageFilter, ImageDraw, ImageChops
 from gifos.utils.convert_ansi_escape import ConvertAnsiEscape
 
@@ -21,7 +21,7 @@ ConvertAnsiEscape.ANSI_ESCAPE_MAP_TXT_COLOR.update({
     "93": "#FFE500",   # bright yellow
     "94": "#FF9500",   # bright orange
     "95": "#FF44DD",   # bright magenta
-    "96": "#FFE500",   # bright cyan → yellow (cyan blends)
+    "96": "#FFE500",   # bright cyan → yellow
     "97": "#FFFFFF",   # bright white
 })
 
@@ -30,67 +30,45 @@ ConvertAnsiEscape.ANSI_ESCAPE_MAP_TXT_COLOR.update({
 # ============================================
 #
 # REQUIREMENTS:
-# 1. Create a .env file in the project folder
-# 2. Add: GITHUB_TOKEN=your_token_here
-# 3. assets/wallpaper.jpg must be present
+# 1. assets/Aurora.png must be present
+# 2. assets/SKILLS.png must be present
+# 3. Python dependencies: gifos, Pillow, qrcode
 #
 # APPROACH:
 # gifos generates terminal frames with the default background (#0c0e0f).
 # Before assembling the GIF, each PNG frame is post-processed:
 #   - wallpaper fills the GIF canvas
-#   - frosted glass (blurred wallpaper + dark overlay) covers the terminal window
-#   - terminal content is composited using chroma-key (bg pixels show glass through)
-#   - macOS chrome (rounded border, shadow, traffic lights) is drawn on top
+#   - frosted glass covers the terminal window
+#   - terminal content is composited using chroma-key
+#   - macOS chrome is drawn on top
 # ============================================
 
-# Auto-detected from GitHub Actions context; falls back to env var or default.
-USERNAME = (
-    os.environ.get("GITHUB_REPOSITORY_OWNER")
-    or os.environ.get("GIT_USERNAME")
-    or "dbuzatto"
-)
-
 # ---- Layout constants ----
-GIF_W, GIF_H     = 740, 520   # full canvas including margin
-WIN_X, WIN_Y     = 1, 1     # window top-left in canvas
-WIN_W            = 738        # window width (matches gifos terminal width)
-TITLE_H          = 30         # macOS title bar height
-WIN_H            = TITLE_H + 480  # total window height (480)
-TERMINAL_X       = WIN_X      # gifos frame is pasted here
-TERMINAL_Y       = WIN_Y + TITLE_H
-CORNER_RADIUS    = 10
+GIF_W, GIF_H = 740, 520
+WIN_X, WIN_Y = 1, 1
+WIN_W = 738
+TITLE_H = 30
+WIN_H = TITLE_H + 480
+TERMINAL_X = WIN_X
+TERMINAL_Y = WIN_Y + TITLE_H
+CORNER_RADIUS = 10
 
 # Default gifos background color (ANSI code 49 → #0c0e0f) — used as chroma key
 BG_COLOR_HEX = "#0c0e0f"
-BG_COLOR     = (12, 14, 15)
+BG_COLOR = (12, 14, 15)
 
+# gifos defaults to 15 FPS in the package configuration.
+# This keeps the README-requested 5-second SKILLS hold at exactly 75 frames.
+GIFOS_FPS = 15
+SKILLS_HOLD_SECONDS = 5
+SKILLS_HOLD_FRAMES = GIFOS_FPS * SKILLS_HOLD_SECONDS
 
-# ============================================
-# GitHub stats (same as original)
-# ============================================
-
-def get_total_repos(username):
-    try:
-        response = requests.get(f"https://api.github.com/users/{username}")
-        if response.status_code == 200:
-            return response.json().get("public_repos", 0)
-    except Exception:
-        pass
-    return None
-
-try:
-    github_stats = gifos.utils.fetch_github_stats(user_name=USERNAME)
-    has_stats = github_stats is not None
-    if not has_stats:
-        print("Warning: Could not fetch GitHub stats")
-        print("Configure GITHUB_TOKEN in .env file")
-except (Exception, SystemExit) as e:
-    print(f"Warning: Error fetching GitHub stats: {e}")
-    print("Using example data...")
-    has_stats = False
-    github_stats = None
-
-total_repos = get_total_repos(USERNAME)
+FRAMES_DIR = "./frames"
+WALLPAPER_PATH = "assets/Aurora.png"
+SKILLS_PATH = "assets/SKILLS.png"
+QR_PATH = "./clipwallet_qr.png"
+OUTPUT_GIF = "output.gif"
+CLIPWALLET_URL = "https://github.com/shaaravraghu/ClipWallet/"
 
 
 # ============================================
@@ -98,19 +76,21 @@ total_repos = get_total_repos(USERNAME)
 # ============================================
 
 def _scale_crop(img, target_w, target_h):
-    """Scale image to fill target dimensions (maintain aspect ratio, center-crop)."""
+    """Scale image to fill target dimensions while preserving aspect ratio."""
     w, h = img.size
     ratio = w / h
     target_ratio = target_w / target_h
+
     if ratio > target_ratio:
         new_h = target_h
         new_w = int(new_h * ratio)
     else:
         new_w = target_w
         new_h = int(new_w / ratio)
+
     scaled = img.resize((new_w, new_h), Image.LANCZOS)
     left = (new_w - target_w) // 2
-    top  = (new_h - target_h) // 2
+    top = (new_h - target_h) // 2
     return scaled.crop((left, top, left + target_w, top + target_h))
 
 
@@ -125,13 +105,13 @@ def prepare_glass_layers(wallpaper_path):
     Build the static base canvas and chrome overlay used for every frame.
 
     Returns:
-        base_canvas  — RGB image (GIF_W × GIF_H): wallpaper + shadow + frosted window
-        chrome       — RGBA image (GIF_W × GIF_H): window border + traffic lights
+        base_canvas — RGB image (GIF_W × GIF_H)
+        chrome      — RGBA image (GIF_W × GIF_H)
     """
     wallpaper = Image.open(wallpaper_path).convert("RGB")
     wallpaper_bg = _scale_crop(wallpaper, GIF_W, GIF_H)
 
-    # ---- Drop shadow (rendered beneath window) ----
+    # ---- Drop shadow ----
     shadow = Image.new("RGBA", (GIF_W, GIF_H), (0, 0, 0, 0))
     shadow_draw = ImageDraw.Draw(shadow)
     shadow_draw.rounded_rectangle(
@@ -140,11 +120,12 @@ def prepare_glass_layers(wallpaper_path):
         fill=(0, 0, 0, 130),
     )
     shadow = shadow.filter(ImageFilter.GaussianBlur(radius=8))
-
     wallpaper_with_shadow = _blend_overlay(wallpaper_bg, shadow)
 
     # ---- Frosted glass — title bar ----
-    title_region = wallpaper_bg.crop((WIN_X, WIN_Y, WIN_X + WIN_W, WIN_Y + TITLE_H))
+    title_region = wallpaper_bg.crop(
+        (WIN_X, WIN_Y, WIN_X + WIN_W, WIN_Y + TITLE_H)
+    )
     frosted_title = title_region.filter(ImageFilter.GaussianBlur(radius=5))
     title_overlay = Image.new("RGBA", frosted_title.size, (255, 255, 255, 30))
     frosted_title = _blend_overlay(frosted_title, title_overlay)
@@ -157,25 +138,26 @@ def prepare_glass_layers(wallpaper_path):
     content_overlay = Image.new("RGBA", frosted_content.size, (255, 255, 255, 1))
     frosted_content = _blend_overlay(frosted_content, content_overlay)
 
-    # ---- Assemble frosted window (with rounded corners) ----
+    # ---- Assemble frosted window ----
     window_img = Image.new("RGB", (WIN_W, WIN_H))
     window_img.paste(frosted_title, (0, 0))
     window_img.paste(frosted_content, (0, TITLE_H))
 
     window_mask = Image.new("L", (WIN_W, WIN_H), 0)
     ImageDraw.Draw(window_mask).rounded_rectangle(
-        [(0, 0), (WIN_W - 1, WIN_H - 1)], radius=CORNER_RADIUS, fill=255
+        [(0, 0), (WIN_W - 1, WIN_H - 1)],
+        radius=CORNER_RADIUS,
+        fill=255,
     )
 
-    # ---- Composite: wallpaper_with_shadow + frosted window ----
+    # ---- Composite window onto wallpaper ----
     base_canvas = wallpaper_with_shadow.copy()
     base_canvas.paste(window_img, (WIN_X, WIN_Y), window_mask)
 
-    # ---- Chrome overlay (RGBA): border + title separator + traffic lights ----
+    # ---- Chrome overlay ----
     chrome = Image.new("RGBA", (GIF_W, GIF_H), (0, 0, 0, 0))
     draw = ImageDraw.Draw(chrome)
 
-    # Window border
     draw.rounded_rectangle(
         [(WIN_X, WIN_Y), (WIN_X + WIN_W - 1, WIN_Y + WIN_H - 1)],
         radius=CORNER_RADIUS,
@@ -183,7 +165,6 @@ def prepare_glass_layers(wallpaper_path):
         width=1,
     )
 
-    # Title bar bottom separator
     draw.line(
         [
             (WIN_X + CORNER_RADIUS, WIN_Y + TITLE_H),
@@ -193,14 +174,14 @@ def prepare_glass_layers(wallpaper_path):
         width=1,
     )
 
-    # Traffic lights
-    tl_y = WIN_Y + TITLE_H // 2
     traffic_lights = [
-        ("#FF5F57", "#E0443E"),  # red
-        ("#FFBD2E", "#DFA223"),  # yellow
-        ("#28C840", "#1DAD2B"),  # green
+        ("#FF5F57", "#E0443E"),
+        ("#FFBD2E", "#DFA223"),
+        ("#28C840", "#1DAD2B"),
     ]
     tl_r = 6
+    tl_y = WIN_Y + TITLE_H // 2
+
     for i, (fill, outline) in enumerate(traffic_lights):
         cx = WIN_X + 15 + i * 20 + tl_r
         draw.ellipse(
@@ -214,145 +195,494 @@ def prepare_glass_layers(wallpaper_path):
 
 def chroma_mask(terminal_frame):
     """
-    Returns an 'L' mask:  255 = terminal pixel (keep)  /  0 = background (show glass).
-    Any pixel exactly equal to BG_COLOR becomes 0 (transparent).
+    Return an L mask where:
+      255 = terminal pixel
+        0 = terminal background / show glass
     """
     bg_ref = Image.new("RGB", terminal_frame.size, BG_COLOR)
-    diff   = ImageChops.difference(terminal_frame, bg_ref)
+    diff = ImageChops.difference(terminal_frame, bg_ref)
     r, g, b = diff.split()
-    # 255 if ANY channel differs from BG_COLOR
     mask = ImageChops.lighter(ImageChops.lighter(r, g), b)
     return mask.point(lambda p: 255 if p > 0 else 0)
 
 
-def post_process_frames(base_canvas, chrome, frames_dir="./frames"):
-    """Composite the liquid glass effect onto every PNG frame gifos generated."""
+def _frame_number(frame_path):
+    return int(
+        os.path.splitext(os.path.basename(frame_path))[0].split("_")[1]
+    )
+
+
+def get_frame_files():
+    return sorted(
+        glob.glob(f"{FRAMES_DIR}/frame_*.png"),
+        key=_frame_number,
+    )
+
+
+def post_process_frames(base_canvas, chrome, frames_dir=FRAMES_DIR):
+    """Composite the liquid-glass effect onto every gifos-generated PNG frame."""
     frame_files = sorted(
         glob.glob(f"{frames_dir}/frame_*.png"),
-        key=lambda x: int(os.path.splitext(os.path.basename(x))[0].split("_")[1]),
+        key=_frame_number,
     )
-    print(f"INFO: Post-processing {len(frame_files)} frames with liquid glass effect...")
+
+    print(
+        f"INFO: Post-processing {len(frame_files)} frames "
+        "with liquid glass effect..."
+    )
+
     for frame_path in frame_files:
         terminal_frame = Image.open(frame_path).convert("RGB")
         canvas = base_canvas.copy()
 
-        # Paste only non-background pixels (chroma key)
         mask = chroma_mask(terminal_frame)
         canvas.paste(terminal_frame, (TERMINAL_X, TERMINAL_Y), mask)
 
-        # Apply chrome overlay (border + traffic lights)
-        canvas = Image.alpha_composite(canvas.convert("RGBA"), chrome).convert("RGB")
+        canvas = Image.alpha_composite(
+            canvas.convert("RGBA"), chrome
+        ).convert("RGB")
 
         canvas.save(frame_path, "PNG")
 
-    print(f"INFO: Liquid glass post-processing complete ({len(frame_files)} frames).")
+    print(
+        f"INFO: Liquid glass post-processing complete ({len(frame_files)} frames)."
+    )
 
 
 # ============================================
-# Terminal — content generation (gifos)
+# Special visual frames
 # ============================================
+
+def _fit_inside(img, max_w, max_h):
+    """Return a resized copy fitting inside max_w × max_h."""
+    result = img.copy()
+    result.thumbnail((max_w, max_h), Image.LANCZOS)
+    return result
+
+
+def create_qr_code(url, path=QR_PATH):
+    """Create the ClipWallet QR image used by the final terminal frame."""
+    try:
+        import qrcode
+    except ImportError as exc:
+        raise RuntimeError(
+            "The qrcode package is required. Install it with: pip install qrcode[pil]"
+        ) from exc
+
+    qr = qrcode.QRCode(
+        version=None,
+        error_correction=qrcode.constants.ERROR_CORRECT_M,
+        box_size=8,
+        border=2,
+    )
+    qr.add_data(url)
+    qr.make(fit=True)
+    qr_img = qr.make_image(fill_color="black", back_color="white").convert("RGBA")
+    qr_img.save(path)
+    return path
+
+
+def patch_latest_frames_with_image(image_path, frame_count, max_w=620, max_h=330):
+    """
+    Replace the terminal-area content of the latest N raw gifos frames with an image.
+    The frames remain PNGs and are still passed through the existing liquid-glass
+    post-processing afterwards.
+    """
+    frame_files = get_frame_files()
+    if not frame_files:
+        raise RuntimeError("No gifos frames were generated before image insertion.")
+
+    target_frames = frame_files[-frame_count:]
+    source = Image.open(image_path).convert("RGBA")
+    source = _fit_inside(source, max_w=max_w, max_h=max_h)
+
+    # A lightly translucent panel keeps the image legible without changing
+    # the surrounding macOS liquid-glass treatment.
+    panel_w = min(WIN_W - 36, source.width + 28)
+    panel_h = min(410, source.height + 28)
+    panel = Image.new("RGBA", (panel_w, panel_h), (255, 255, 255, 215))
+
+    x = (panel_w - source.width) // 2
+    y = (panel_h - source.height) // 2
+    panel.alpha_composite(source, (x, y))
+
+    px = (WIN_W - panel.width) // 2
+    py = TITLE_H + 18 + max(0, (450 - panel.height) // 2)
+
+    for frame_path in target_frames:
+        frame = Image.open(frame_path).convert("RGBA")
+        frame.alpha_composite(panel, (px, py))
+        frame.convert("RGB").save(frame_path, "PNG")
+
+
+def patch_latest_frames_with_qr(qr_path, frame_count):
+    """Add a readable QR code to the latest terminal frames."""
+    frame_files = get_frame_files()
+    if not frame_files:
+        raise RuntimeError("No gifos frames were generated before QR insertion.")
+
+    target_frames = frame_files[-frame_count:]
+    qr = Image.open(qr_path).convert("RGBA")
+    qr = _fit_inside(qr, max_w=190, max_h=190)
+
+    for frame_path in target_frames:
+        frame = Image.open(frame_path).convert("RGBA")
+
+        # Put the QR at the lower-right of the terminal content area.
+        x = WIN_W - qr.width - 22
+        y = TERMINAL_Y + 450 - qr.height - 18
+
+        # White background guarantees strong QR contrast.
+        backing = Image.new("RGBA", (qr.width + 12, qr.height + 12), "white")
+        backing.alpha_composite(qr, (6, 6))
+
+        frame.alpha_composite(backing, (x - 6, y - 6))
+        frame.convert("RGB").save(frame_path, "PNG")
+
+
+# ============================================
+# Terminal — exact README_TERMINAL.txt sequence
+# ============================================
+
+# IMPORTANT:
+# The content/order below follows README_TERMINAL.txt exactly.
+# The README itself is never modified by this script.
 
 t = gifos.Terminal(width=WIN_W, height=450, xpad=10, ypad=10)
-t.set_prompt(f"\x1b[91m{USERNAME}\x1b[0m@\x1b[93mgithub\x1b[0m ~> ")
+t.set_prompt("$ ")
 
-# -- Boot sequence --
-t.gen_text("Initializing terminal...", row_num=1)
-t.clone_frame(5)
-t.gen_text("\x1b[32m[OK]\x1b[0m System ready", row_num=2)
-t.clone_frame(10)
-
-# -- Stats command --
-t.gen_prompt(row_num=3)
-t.gen_typing_text("github-stats --user " + USERNAME, row_num=3, contin=True, speed=1)
+# --------------------------------------------
+# $ whoami
+# --------------------------------------------
+t.gen_prompt(row_num=1)
+t.gen_typing_text("whoami", row_num=1, contin=True, speed=1)
 t.clone_frame(5)
 
-t.gen_text("", row_num=4)
-t.gen_text(f"\x1b[96m=== GitHub Stats for {USERNAME} ===\x1b[0m", row_num=5)
-t.clone_frame(3)
+whoami_lines = [
+    "Shipped 2X YC-backed, Antler-backed, NSRCEL-IIMB-backed startups, IICPC and 2 prominent companies based in SF",
+    "Majoring in CS & Math (core CS, Math, Computing & Statistics)",
+    "Part of YC Startup School and GSSoC'26",
+    "Building True-Intelligence Systems",
+    "Led several software teams, students and clubs and also mentored developers ",
+    "Looking to get into AI-Research/ Entrepreneurship!",
+    "compact{",
+    "\tbuilder of strange systems",
+    "\tcollector of hard problems",
+    "\tturning ideas into machines",
+    "\tsystems thinker · terminal native",
+    "\tdebugging what everyone else gave up",
+    "}",
+]
 
-if has_stats:
-    repos_count = total_repos if total_repos else github_stats.total_repo_contributions
-    stats_lines = [
-        f"\x1b[93mName:\x1b[0m        {github_stats.account_name or USERNAME}",
-        f"\x1b[93mFollowers:\x1b[0m   {github_stats.total_followers}",
-        f"\x1b[93mStars:\x1b[0m       {github_stats.total_stargazers}",
-        f"\x1b[93mCommits:\x1b[0m     {github_stats.total_commits_last_year} (last year)",
-        f"\x1b[93mPRs:\x1b[0m         {github_stats.total_pull_requests_made}",
-        f"\x1b[93mIssues:\x1b[0m      {github_stats.total_issues}",
-        f"\x1b[93mRepos:\x1b[0m       {repos_count}",
-        f"\x1b[93mRank:\x1b[0m        {github_stats.user_rank.level} ({github_stats.user_rank.percentile:.1f}%)",
-    ]
-    if github_stats.languages_sorted:
-        top_langs = github_stats.languages_sorted[:3]
-        langs_str = ", ".join([f"{lang[0]} ({lang[1]}%)" for lang in top_langs])
-        stats_lines.append(f"\x1b[93mTop Langs:\x1b[0m   {langs_str}")
-else:
-    stats_lines = [
-        f"\x1b[93mName:\x1b[0m        {USERNAME}",
-        "\x1b[93mFollowers:\x1b[0m   --",
-        "\x1b[93mStars:\x1b[0m       --",
-        "\x1b[93mCommits:\x1b[0m     -- (configure GITHUB_TOKEN)",
-        "\x1b[93mPRs:\x1b[0m         --",
-        "\x1b[93mIssues:\x1b[0m      --",
-        "\x1b[93mRepos:\x1b[0m       --",
-        "\x1b[93mRank:\x1b[0m        --",
-    ]
+for i, line in enumerate(whoami_lines, start=2):
+    t.gen_text(line, row_num=i)
+    t.clone_frame(1)
 
-for i, line in enumerate(stats_lines):
-    t.gen_text(line, row_num=6 + i)
-    t.clone_frame(3)
+t.clone_frame(20)
 
-t.clone_frame(10)
-t.gen_text("\x1b[96m================================\x1b[0m", row_num=6 + len(stats_lines))
-t.clone_frame(15)
+# --------------------------------------------
+# $ interests
+# --------------------------------------------
+t.clear_frame()
+t.gen_prompt(row_num=1)
+t.gen_typing_text("interests", row_num=1, contin=True, speed=1)
+t.clone_frame(5)
 
-# -- Clear + Skills --
-t.gen_prompt(row_num=7 + len(stats_lines))
-t.gen_typing_text("clear", row_num=7 + len(stats_lines), contin=True, speed=1)
+interests_lines = [
+    "LLM, AGI, GenAI, AI: Agents, Solutions, Frameworks, Multi-agents/ Swarms, Self-optimization, True-intelligence;",
+    "High Frequency Algo-Trading & Quantitative Finance; ",
+    "Quantum Mechanics, Computing, Cryptography, Key Distribution, Algorithms, ML & Communication; ",
+    "Particle Physics, Astrophysics & Nuclear Physics; ",
+    "Algorithm Development; Backend Development; ",
+    "Founder’s Office (GTM); Entrpreneurship.",
+]
+
+for i, line in enumerate(interests_lines, start=2):
+    t.gen_text(line, row_num=i)
+    t.clone_frame(2)
+
+t.clone_frame(20)
+
+# --------------------------------------------
+# $ clear
+# --------------------------------------------
+t.gen_prompt(row_num=10)
+t.gen_typing_text("clear", row_num=10, contin=True, speed=1)
 t.clone_frame(5)
 t.clear_frame()
 
+# --------------------------------------------
+# $ philosophy
+# --------------------------------------------
 t.gen_prompt(row_num=1)
-t.gen_typing_text("cat skills.txt", row_num=1, contin=True, speed=1)
+t.gen_typing_text("philosophy", row_num=1, contin=True, speed=1)
 t.clone_frame(5)
 
-t.gen_text("", row_num=2)
-t.gen_text("\x1b[96m=== Tech Stack ===\x1b[0m", row_num=3)
-t.clone_frame(3)
-
-skills = [
-    ("\x1b[94mCloud:\x1b[0m       ", "AWS, GCP, OCI, Cloudflare"),
-    ("\x1b[94mDevOps:\x1b[0m      ", "Terraform, Kubernetes, Docker, Git"),
-    ("\x1b[94mCI/CD:\x1b[0m       ", "GitLab, GitHub Actions"),
-    ("\x1b[94mMonitoring:\x1b[0m  ", "Grafana, Prometheus, Jaeger, Loki"),
-    ("\x1b[94mTools:\x1b[0m       ", "Postman, RabbitMQ, MongoDB"),
-    ("\x1b[94mOS:\x1b[0m          ", "macOS, Debian"),
-    ("\x1b[94mLanguages:\x1b[0m   ", "Java, Python"),
+philosophy_lines = [
+    "Show up. Everyday. No Matter how many times you've failed - or how horrible yesterday was. Cuz today is still yours!",
+    "build > talk",
+    "curiosity > credentials",
+    "shipping > perfection",
+    "experience > assumption",
+    "originality > imitation",
+    "progress > perfection",
+    "meaning > noise",
 ]
 
-for i, (label, value) in enumerate(skills):
-    t.gen_text(f"{label}{value}", row_num=4 + i)
+for i, line in enumerate(philosophy_lines, start=2):
+    t.gen_text(line, row_num=i)
     t.clone_frame(2)
 
+t.clone_frame(25)
+
+# --------------------------------------------
+# $ clear
+# --------------------------------------------
+t.gen_prompt(row_num=11)
+t.gen_typing_text("clear", row_num=11, contin=True, speed=1)
+t.clone_frame(5)
+t.clear_frame()
+
+# --------------------------------------------
+# $ status
+# $ archetype
+# $ personality
+# $ vision
+# $ weaknesses
+# --------------------------------------------
+t.gen_prompt(row_num=1)
+t.gen_typing_text("status", row_num=1, contin=True, speed=1)
+t.clone_frame(3)
+
+t.gen_text("    ● BUILDING [FINAL STAGE]", row_num=2)
+t.gen_text("    ● SHIPPING", row_num=3)
+t.gen_text("    ● MARKETING & SALES [STARTED]", row_num=4)
 t.clone_frame(10)
-t.gen_text("\x1b[96m==================\x1b[0m", row_num=4 + len(skills))
+
+t.gen_text("", row_num=5)
+t.gen_prompt(row_num=6)
+t.gen_typing_text("archetype", row_num=6, contin=True, speed=1)
+t.clone_frame(3)
+t.gen_text("the systems builder", row_num=7)
+t.gen_text("part engineer, part tinkerer, part obsessive explorer", row_num=8)
+t.clone_frame(10)
+
+t.gen_text("", row_num=9)
+t.gen_prompt(row_num=10)
+t.gen_typing_text("personality", row_num=10, contin=True, speed=1)
+t.clone_frame(3)
+
+personality_lines = [
+    "curious",
+    "opinionated",
+    "detail-obsessed",
+    "experimental",
+    "iterative",
+    "quietly ambitious",
+]
+for i, line in enumerate(personality_lines, start=11):
+    t.gen_text(line, row_num=i)
+t.clone_frame(10)
+
+t.gen_prompt(row_num=18)
+t.gen_typing_text("vision", row_num=18, contin=True, speed=1)
+t.clone_frame(3)
+t.gen_text("build true intelligence", row_num=19)
+t.clone_frame(10)
+
+t.gen_prompt(row_num=21)
+t.gen_typing_text("weaknesses", row_num=21, contin=True, speed=1)
+t.clone_frame(3)
+t.gen_text("overthinking the details", row_num=22)
+t.gen_text("starting one more experiment", row_num=23)
+t.gen_text("wanting the system to be just a little cleaner", row_num=24)
+t.clone_frame(20)
+
+# --------------------------------------------
+# $ clear
+# --------------------------------------------
+t.gen_prompt(row_num=26)
+t.gen_typing_text("clear", row_num=26, contin=True, speed=1)
+t.clone_frame(5)
+t.clear_frame()
+
+# --------------------------------------------
+# Skills image sequence
+# --------------------------------------------
+# README_TERMINAL.txt specifies these exact three commands.
+for row, command in enumerate([
+    "import skills.exe from stack",
+    "compile skills.exe",
+    "load skills.exe",
+], start=1):
+    t.gen_prompt(row_num=row)
+    t.gen_typing_text(command, row_num=row, contin=True, speed=1)
+    t.clone_frame(4)
+
+# Exact README marker text.
+t.gen_text("", row_num=4)
+t.gen_text("(Display image SKILLS.png for 5s)", row_num=5)
+t.clone_frame(SKILLS_HOLD_FRAMES)
+
+# Replace the last five seconds of those frames with the actual SKILLS image.
+if not Path(SKILLS_PATH).exists():
+    raise FileNotFoundError(
+        f"Missing {SKILLS_PATH}. Add SKILLS.png to the assets directory."
+    )
+patch_latest_frames_with_image(
+    SKILLS_PATH,
+    frame_count=SKILLS_HOLD_FRAMES,
+    max_w=660,
+    max_h=350,
+)
+
+t.gen_text("", row_num=6)
+t.gen_text("Ctrl^ X", row_num=7)
+t.clone_frame(15)
+
+# --------------------------------------------
+# $ clear
+# --------------------------------------------
+t.gen_prompt(row_num=9)
+t.gen_typing_text("clear", row_num=9, contin=True, speed=1)
+t.clone_frame(5)
+t.clear_frame()
+
+# --------------------------------------------
+# $ uptime
+# --------------------------------------------
+t.gen_prompt(row_num=1)
+t.gen_typing_text("uptime", row_num=1, contin=True, speed=1)
 t.clone_frame(5)
 
-# -- Final message --
-final_row = 5 + len(skills)
-t.gen_prompt(row_num=final_row)
-t.gen_typing_text(
-    "echo 'Thanks for visiting my profile!'", row_num=final_row, contin=True, speed=1
-)
+uptime_lines = [
+    "curiosity        [██████████] 100%",
+    "energy          [████████░░]  80%",
+    "patience        [██████░░░░]  60%",
+    "sleep           [███░░░░░░░]  30%",
+    "overthinking    [██████████]█████  150%",
+    "experimentation [██████████]██  120%",
+    "coffee          [██████████]  100%",
+    "unfinished_work [██████████]██████████ 200%",
+    "ideas           [██████████]████████████████████ 300%",
+]
+for i, line in enumerate(uptime_lines, start=2):
+    t.gen_text(line, row_num=i)
+    t.clone_frame(2)
+t.clone_frame(20)
+
+# --------------------------------------------
+# $ system_check
+# --------------------------------------------
+t.gen_prompt(row_num=12)
+t.gen_typing_text("system_check", row_num=12, contin=True, speed=1)
 t.clone_frame(5)
-t.gen_text("\x1b[92mThanks for visiting my profile!\x1b[0m", row_num=final_row + 1)
-t.clone_frame(40)
+
+system_check_lines = [
+    "CORE",
+    "\t[ OK ] curiosity",
+    "\t[ OK ] imagination",
+    "\t[ OK ] independence",
+    "\t[ OK ] ambition",
+    "\t[ OK ] adaptability",
+    "\t[ OK ] sense of humor",
+    "\t[ OK ] willingness to experiment",
+    "",
+    "BEHAVIOR",
+    "\t[PASS] learns quickly",
+    "\t[PASS] questions defaults ",
+    "\t[PASS] seeks novelty ",
+    "\t[WARN] finishes everything",
+    "\t[WARN] too many ideas",
+    "\t[WARN] \"one more thing\"",
+    "",
+    "KNOWN ISSUES",
+    "  overthinking ........... ACTIVE",
+    "  rabbit holes ........... ACTIVE",
+    "  perfectionism .......... INTERMITTENT",
+    "  sleep .................. DEGRADED",
+    "",
+    "[FAIL] unable to market and sell product",
+    "",
+    "SYSTEM",
+    "  stable",
+    "  evolving",
+    "  occasionally chaotic",
+    "",
+    "SYSTEM: OPERATIONAL",
+    "RESULT: HEALTHY ENOUGH TO SHIP",
+]
+
+# The system_check section is intentionally split into two viewport-sized chunks.
+# It preserves the README order while keeping the terminal readable.
+first_chunk = system_check_lines[:18]
+second_chunk = system_check_lines[18:]
+
+for i, line in enumerate(first_chunk, start=13):
+    t.gen_text(line, row_num=i)
+    if line:
+        t.clone_frame(1)
+
+t.clone_frame(15)
+
+# Continue the same command output without clearing it.
+for i, line in enumerate(second_chunk, start=31):
+    t.gen_text(line, row_num=i)
+    if line:
+        t.clone_frame(1)
+
+t.clone_frame(35)
+
+# --------------------------------------------
+# $ clear
+# --------------------------------------------
+t.gen_prompt(row_num=42)
+t.gen_typing_text("clear", row_num=42, contin=True, speed=1)
+t.clone_frame(5)
+t.clear_frame()
+
+# --------------------------------------------
+# Final messages + ClipWallet QR
+# --------------------------------------------
+t.gen_prompt(row_num=1)
+t.gen_typing_text('echo "Thanks for visiting"*3', row_num=1, contin=True, speed=1)
+t.clone_frame(5)
+t.gen_text("Thanks for visiting", row_num=2)
+t.gen_text("Thanks for visiting", row_num=3)
+t.gen_text("Thanks for visiting", row_num=4)
+t.clone_frame(30)
+
+t.gen_prompt(row_num=6)
+t.gen_typing_text('echo "Support {ClipWallet}"', row_num=6, contin=True, speed=1)
+t.clone_frame(5)
+t.gen_text(
+    "Support ClipWallet by staring the repo; fork for open-source development and download quick!",
+    row_num=7,
+)
+t.clone_frame(12)
+
+t.gen_text(
+    "(/qrcode(https://github.com/shaaravraghu/ClipWallet/))",
+    row_num=9,
+)
+
+# Hold the final terminal text, then show the real QR code in the same frames.
+FINAL_QR_HOLD_FRAMES = 75
+try:
+    qr_path = create_qr_code(CLIPWALLET_URL, QR_PATH)
+except Exception:
+    # Preserve the exact README terminal text even if qrcode generation is unavailable.
+    qr_path = None
+
+t.clone_frame(FINAL_QR_HOLD_FRAMES)
+if qr_path:
+    patch_latest_frames_with_qr(qr_path, FINAL_QR_HOLD_FRAMES)
 
 # ============================================
 # Post-process frames → Liquid Glass effect
 # ============================================
 
-base_canvas, chrome = prepare_glass_layers("assets/Aurora.png")
+base_canvas, chrome = prepare_glass_layers(WALLPAPER_PATH)
 post_process_frames(base_canvas, chrome)
 
 # ============================================
@@ -361,6 +691,6 @@ post_process_frames(base_canvas, chrome)
 
 t.gen_gif()
 
-print("\n GIF generated: output.gif")
-print("\nTo use in your README.md:")
-print("![Terminal GIF](./output.gif)")
+print("\nGIF generated: output.gif")
+print("\nREADME_TERMINAL.txt was not modified.")
+print("Use: ![Terminal GIF](./output.gif)")
