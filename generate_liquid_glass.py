@@ -330,8 +330,8 @@ def patch_latest_frames_with_qr(qr_path, frame_count):
         frame = Image.open(frame_path).convert("RGBA")
 
         # Local frame coordinates (WIN_W x 450) — no TERMINAL_Y offset here.
-        x = WIN_W - qr.width - 22
-        y = 450 - qr.height - 18
+        x = WIN_W - qr.width - 30
+        y = 450 - qr.height - 30
 
         backing = Image.new("RGBA", (qr.width + 12, qr.height + 12), "white")
         backing.alpha_composite(qr, (6, 6))
@@ -583,7 +583,7 @@ patch_latest_frames_with_image(
     SKILLS_PATH,
     frame_count=SKILLS_HOLD_FRAMES,
     max_w=720,
-    max_h=520,
+    max_h=560,
 )
 
 t.gen_text("", row_num=6)
