@@ -60,7 +60,7 @@ BG_COLOR = (12, 14, 15)
 # gifos defaults to 15 FPS in the package configuration.
 # This keeps the README-requested 5-second SKILLS hold at exactly 75 frames.
 GIFOS_FPS = 15
-SKILLS_HOLD_SECONDS = 5
+SKILLS_HOLD_SECONDS = 10
 SKILLS_HOLD_FRAMES = GIFOS_FPS * SKILLS_HOLD_SECONDS
 
 FRAMES_DIR = "./frames"
@@ -471,6 +471,7 @@ t.gen_typing_text("philosophy", row_num=1, contin=True, speed=1)
 t.clone_frame(5)
 
 philosophy_lines = [
+    "",
     "Show up. Everyday. No Matter how many times you've failed - or how horrible yesterday was.",
     "Cuz today is still yours!",
     "build > talk",
@@ -491,8 +492,8 @@ t.clone_frame(25)
 # --------------------------------------------
 # $ clear
 # --------------------------------------------
-t.gen_prompt(row_num=11)
-t.gen_typing_text("clear", row_num=11, contin=True, speed=1)
+t.gen_prompt(row_num=12)
+t.gen_typing_text("clear", row_num=12, contin=True, speed=1)
 t.clone_frame(5)
 t.clear_frame()
 
@@ -580,8 +581,8 @@ if not Path(SKILLS_PATH).exists():
 patch_latest_frames_with_image(
     SKILLS_PATH,
     frame_count=SKILLS_HOLD_FRAMES,
-    max_w=660,
-    max_h=350,
+    max_w=720,
+    max_h=500,
 )
 
 t.gen_text("", row_num=6)
