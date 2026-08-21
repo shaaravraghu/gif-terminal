@@ -511,16 +511,8 @@ t.gen_prompt(row_num=10)
 t.gen_typing_text("personality", row_num=10, contin=True, speed=1)
 t.clone_frame(3)
 
-personality_lines = [
-    "curious",
-    "opinionated",
-    "detail-obsessed",
-    "experimental",
-    "iterative",
-    "quietly ambitious",
-]
-for i, line in enumerate(personality_lines, start=11):
-    t.gen_text(line, row_num=i)
+personality_line = "curious · opinionated · detail-obsessed · experimental · iterative · quietly ambitious"
+t.gen_text(personality_line, row_num=11)
 t.clone_frame(10)
 
 t.gen_prompt(row_num=18)
