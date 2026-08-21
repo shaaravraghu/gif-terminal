@@ -745,13 +745,19 @@ t.clone_frame(40)
 FINAL_QR_HOLD_FRAMES = 75
 try:
     qr_path = create_qr_code(CLIPWALLET_URL, QR_PATH)
-except Exception:
-    # Preserve the exact README terminal text even if qrcode generation is unavailable.
+    print(f"INFO: QR code created at {qr_path}")
+except Exception as e:
+    print(f"WARNING: QR code generation failed ({type(e).__name__}: {e})")
     qr_path = None
 
 t.clone_frame(FINAL_QR_HOLD_FRAMES)
+
 if qr_path:
-    patch_latest_frames_with_qr(qr_path, FINAL_QR_HOLD_FRAMES)
+    try:
+        patch_latest_frames_with_qr(qr_path, FINAL_QR_HOLD_FRAMES)
+        print("INFO: QR code patched into final frames")
+    except Exception as e:
+        print(f"WARNING: QR patching failed ({type(e).__name__}: {e})")
 
 # ============================================
 # Post-process frames → Liquid Glass effect
