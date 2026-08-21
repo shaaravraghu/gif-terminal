@@ -406,13 +406,13 @@ whoami_lines = [
     "Building True-Intelligence Systems",
     "Led several software teams, students and clubs and also mentored developers ",
     "Looking to get into AI-Research/ Entrepreneurship!",
-    "",
+    " ",
     "compact{",
-    "\tbuilder of strange systems",
-    "\tcollector of hard problems",
-    "\tturning ideas into machines",
-    "\tsystems thinker · terminal native",
-    "\tdebugging what everyone else gave up",
+    "    builder of strange systems",
+    "    collector of hard problems",
+    "    turning ideas into machines",
+    "    systems thinker · terminal native",
+    "    debugging what everyone else gave up",
     "}",
     "",
 ]
@@ -705,8 +705,8 @@ t.clone_frame(35)
 # --------------------------------------------
 # $ clear
 # --------------------------------------------
-t.gen_prompt(row_num=17)
-t.gen_typing_text("clear", row_num=17, contin=True, speed=1)
+t.gen_prompt(row_num=18)
+t.gen_typing_text("clear", row_num=18, contin=True, speed=1)
 t.clone_frame(5)
 t.clear_frame()
 
