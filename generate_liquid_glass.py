@@ -493,9 +493,9 @@ t.gen_prompt(row_num=1)
 t.gen_typing_text("status", row_num=1, contin=True, speed=1)
 t.clone_frame(3)
 
-t.gen_text("    ● BUILDING [FINAL STAGE]", row_num=2)
-t.gen_text("    ● SHIPPING", row_num=3)
-t.gen_text("    ● MARKETING & SALES [STARTED]", row_num=4)
+t.gen_text("    > BUILDING [FINAL STAGE]", row_num=2)
+t.gen_text("    > SHIPPING", row_num=3)
+t.gen_text("    > MARKETING & SALES [STARTED]", row_num=4)
 t.clone_frame(10)
 
 t.gen_text("", row_num=5)
