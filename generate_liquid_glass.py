@@ -351,6 +351,45 @@ def patch_latest_frames_with_qr(qr_path, frame_count):
 t = gifos.Terminal(width=WIN_W, height=450, xpad=10, ypad=10)
 t.set_prompt("$ ")
 
+t = gifos.Terminal(width=WIN_W, height=450, xpad=10, ypad=10)
+t.set_prompt("$ ")
+
+# --------------------------------------------
+# Sanitize text for the gohufont-uni-14 bitmap font, which only
+# supports Latin-1 (0–255). Smart/typographic Unicode punctuation
+# (curly quotes, em/en dashes, ellipsis, non-breaking space, etc.)
+# gets normalized to ASCII equivalents before rendering.
+# --------------------------------------------
+_ASCII_REPLACEMENTS = {
+    "\u2018": "'", "\u2019": "'",   # ' '
+    "\u201c": '"', "\u201d": '"',  # " "
+    "\u2013": "-", "\u2014": "-",  # – —
+    "\u2026": "...",                # …
+    "\u00a0": " ",                  # non-breaking space
+}
+
+def _sanitize_text(text):
+    if not isinstance(text, str):
+        return text
+    for uni, ascii_ in _ASCII_REPLACEMENTS.items():
+        text = text.replace(uni, ascii_)
+    # Final safety net: drop/replace anything still outside Latin-1
+    return text.encode("latin-1", errors="replace").decode("latin-1")
+
+_orig_gen_text = t.gen_text
+_orig_gen_typing_text = t.gen_typing_text
+
+def gen_text(text, *args, **kwargs):
+    return _orig_gen_text(_sanitize_text(text), *args, **kwargs)
+
+def gen_typing_text(text, *args, **kwargs):
+    return _orig_gen_typing_text(_sanitize_text(text), *args, **kwargs)
+
+t.gen_text = gen_text
+t.gen_typing_text = gen_typing_text
+
+
+
 # --------------------------------------------
 # $ whoami
 # --------------------------------------------
