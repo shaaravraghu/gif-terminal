@@ -3,6 +3,7 @@ import os
 import glob
 import qrcode
 from PIL import Image, ImageFilter, ImageDraw, ImageChops
+from pathlib import Path
 from gifos.utils.convert_ansi_escape import ConvertAnsiEscape
 
 # Override with high-contrast colors for blue glass background.
