@@ -439,6 +439,7 @@ t.gen_typing_text("interests", row_num=1, contin=True, speed=1)
 t.clone_frame(5)
 
 interests_lines = [
+    "",
     "LLM, AGI, GenAI, AI: Agents, Solutions, Frameworks, Multi-agents/ Swarms,",
     "Self-optimization, True-intelligence;",
     "High Frequency Algo-Trading & Quantitative Finance; ",
@@ -458,8 +459,8 @@ t.clone_frame(40)
 # --------------------------------------------
 # $ clear
 # --------------------------------------------
-t.gen_prompt(row_num=11)
-t.gen_typing_text("clear", row_num=11, contin=True, speed=1)
+t.gen_prompt(row_num=12)
+t.gen_typing_text("clear", row_num=12, contin=True, speed=1)
 t.clone_frame(5)
 t.clear_frame()
 
@@ -605,6 +606,7 @@ t.gen_typing_text("uptime", row_num=1, contin=True, speed=1)
 t.clone_frame(5)
 
 uptime_lines = [
+    "",
     "curiosity       [##########] 100%",
     "energy          [########--]  80%",
     "patience        [######----]  60%",
@@ -623,8 +625,8 @@ t.clone_frame(20)
 # --------------------------------------------
 # $ clear
 # --------------------------------------------
-t.gen_prompt(row_num=12)
-t.gen_typing_text("clear", row_num=12, contin=True, speed=1)
+t.gen_prompt(row_num=13)
+t.gen_typing_text("clear", row_num=13, contin=True, speed=1)
 t.clone_frame(5)
 t.clear_frame()
 
@@ -636,6 +638,7 @@ t.gen_typing_text("system_check", row_num=1, contin=True, speed=1)
 t.clone_frame(5)
 
 system_check_lines = [
+    "",
     "CORE",
     "\t[ OK ] curiosity",
     "\t[ OK ] imagination",
@@ -672,8 +675,8 @@ system_check_lines = [
 
 # Split into two viewport-sized chunks (23-row terminal), with a real
 # `clear` between them so the second chunk gets a fresh row range.
-first_chunk = system_check_lines[:18]   # CORE + BEHAVIOR — 18 lines
-second_chunk = system_check_lines[18:]  # KNOWN ISSUES onward — 13 lines
+first_chunk = system_check_lines[:17]   # CORE + BEHAVIOR — 18 lines
+second_chunk = system_check_lines[17:]  # KNOWN ISSUES onward — 13 lines
 
 for i, line in enumerate(first_chunk, start=2):
     t.gen_text(line, row_num=i)
@@ -688,7 +691,6 @@ t.clone_frame(15)
 # adding second_chunk on top would overflow row 23)
 # --------------------------------------------
 t.gen_prompt(row_num=21)
-t.gen_typing_text("clear", row_num=21, contin=True, speed=1)
 t.clone_frame(5)
 t.clear_frame()
 
@@ -703,8 +705,8 @@ t.clone_frame(35)
 # --------------------------------------------
 # $ clear
 # --------------------------------------------
-t.gen_prompt(row_num=15)
-t.gen_typing_text("clear", row_num=15, contin=True, speed=1)
+t.gen_prompt(row_num=16)
+t.gen_typing_text("clear", row_num=16, contin=True, speed=1)
 t.clone_frame(5)
 t.clear_frame()
 
