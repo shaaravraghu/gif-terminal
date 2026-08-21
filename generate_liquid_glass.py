@@ -515,25 +515,25 @@ personality_line = "curious · opinionated · detail-obsessed · experimental ·
 t.gen_text(personality_line, row_num=11)
 t.clone_frame(10)
 
-t.gen_prompt(row_num=18)
-t.gen_typing_text("vision", row_num=18, contin=True, speed=1)
+t.gen_prompt(row_num=12)
+t.gen_typing_text("vision", row_num=12, contin=True, speed=1)
 t.clone_frame(3)
-t.gen_text("build true intelligence", row_num=19)
-t.clone_frame(10)
+t.gen_text("build true intelligence", row_num=13)
+t.clone_frame(15)
 
-t.gen_prompt(row_num=21)
-t.gen_typing_text("weaknesses", row_num=21, contin=True, speed=1)
+t.gen_prompt(row_num=14)
+t.gen_typing_text("weaknesses", row_num=14, contin=True, speed=1)
 t.clone_frame(3)
-t.gen_text("overthinking the details", row_num=22)
-t.gen_text("starting one more experiment", row_num=23)
-t.gen_text("wanting the system to be just a little cleaner", row_num=24)
+t.gen_text("overthinking the details", row_num=15)
+t.gen_text("starting one more experiment", row_num=16)
+t.gen_text("wanting the system to be just a little cleaner", row_num=17)
 t.clone_frame(20)
 
 # --------------------------------------------
 # $ clear
 # --------------------------------------------
-t.gen_prompt(row_num=26)
-t.gen_typing_text("clear", row_num=26, contin=True, speed=1)
+t.gen_prompt(row_num=18)
+t.gen_typing_text("clear", row_num=18, contin=True, speed=1)
 t.clone_frame(5)
 t.clear_frame()
 
