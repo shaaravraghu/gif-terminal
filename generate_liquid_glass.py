@@ -1,7 +1,7 @@
 import gifos
 import os
 import glob
-from pathlib import Path
+import qrcode
 from PIL import Image, ImageFilter, ImageDraw, ImageChops
 from gifos.utils.convert_ansi_escape import ConvertAnsiEscape
 
