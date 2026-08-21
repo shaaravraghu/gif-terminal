@@ -587,7 +587,7 @@ t.gen_typing_text("uptime", row_num=1, contin=True, speed=1)
 t.clone_frame(5)
 
 uptime_lines = [
-    "curiosity        [██████████] 100%",
+    "curiosity       [██████████] 100%",
     "energy          [████████░░]  80%",
     "patience        [██████░░░░]  60%",
     "sleep           [███░░░░░░░]  30%",
@@ -603,10 +603,18 @@ for i, line in enumerate(uptime_lines, start=2):
 t.clone_frame(20)
 
 # --------------------------------------------
-# $ system_check
+# $ clear
 # --------------------------------------------
 t.gen_prompt(row_num=12)
-t.gen_typing_text("system_check", row_num=12, contin=True, speed=1)
+t.gen_typing_text("clear", row_num=12, contin=True, speed=1)
+t.clone_frame(5)
+t.clear_frame()
+
+# --------------------------------------------
+# $ system_check
+# --------------------------------------------
+t.gen_prompt(row_num=1)
+t.gen_typing_text("system_check", row_num=1, contin=True, speed=1)
 t.clone_frame(5)
 
 system_check_lines = [
@@ -644,31 +652,41 @@ system_check_lines = [
     "RESULT: HEALTHY ENOUGH TO SHIP",
 ]
 
-# The system_check section is intentionally split into two viewport-sized chunks.
-# It preserves the README order while keeping the terminal readable.
-first_chunk = system_check_lines[:18]
-second_chunk = system_check_lines[18:]
+# Split into two viewport-sized chunks (23-row terminal), with a real
+# `clear` between them so the second chunk gets a fresh row range.
+first_chunk = system_check_lines[:18]   # CORE + BEHAVIOR — 18 lines
+second_chunk = system_check_lines[18:]  # KNOWN ISSUES onward — 13 lines
 
-for i, line in enumerate(first_chunk, start=13):
+for i, line in enumerate(first_chunk, start=2):
     t.gen_text(line, row_num=i)
     if line:
         t.clone_frame(1)
+# rows used: 2..19
 
 t.clone_frame(15)
 
-# Continue the same command output without clearing it.
-for i, line in enumerate(second_chunk, start=31):
+# --------------------------------------------
+# $ clear (between chunks — first_chunk alone reaches row 19,
+# adding second_chunk on top would overflow row 23)
+# --------------------------------------------
+t.gen_prompt(row_num=21)
+t.gen_typing_text("clear", row_num=21, contin=True, speed=1)
+t.clone_frame(5)
+t.clear_frame()
+
+for i, line in enumerate(second_chunk, start=1):
     t.gen_text(line, row_num=i)
     if line:
         t.clone_frame(1)
+# rows used: 1..13
 
 t.clone_frame(35)
 
 # --------------------------------------------
 # $ clear
 # --------------------------------------------
-t.gen_prompt(row_num=42)
-t.gen_typing_text("clear", row_num=42, contin=True, speed=1)
+t.gen_prompt(row_num=15)
+t.gen_typing_text("clear", row_num=15, contin=True, speed=1)
 t.clone_frame(5)
 t.clear_frame()
 
