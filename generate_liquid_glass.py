@@ -730,7 +730,7 @@ t.gen_text(
 )
 t.gen_text("staring the repo; ", row_num=8,)
 t.gen_text("fork for open-source development; and", row_num=9,)
-    t.gen_text("download quick!", row_num=10,)
+t.gen_text("download quick!", row_num=10,)
 t.clone_frame(10)
 
 t.gen_text(
