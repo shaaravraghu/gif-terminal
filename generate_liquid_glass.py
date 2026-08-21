@@ -398,12 +398,15 @@ t.gen_typing_text("whoami", row_num=1, contin=True, speed=1)
 t.clone_frame(5)
 
 whoami_lines = [
-    "Shipped 2X YC-backed, Antler-backed, NSRCEL-IIMB-backed startups, IICPC and 2 prominent companies based in SF",
+    "",
+    "Shipped 2X YC-backed, Antler-backed, NSRCEL-IIMB-backed startups, IICPC and",
+    "2 prominent companies based in SF",
     "Majoring in CS & Math (core CS, Math, Computing & Statistics)",
     "Part of YC Startup School and GSSoC'26",
     "Building True-Intelligence Systems",
     "Led several software teams, students and clubs and also mentored developers ",
     "Looking to get into AI-Research/ Entrepreneurship!",
+    "",
     "compact{",
     "\tbuilder of strange systems",
     "\tcollector of hard problems",
@@ -411,9 +414,10 @@ whoami_lines = [
     "\tsystems thinker · terminal native",
     "\tdebugging what everyone else gave up",
     "}",
+    "",
 ]
 
-for i, line in enumerate(whoami_lines, start=2):
+for i, line in enumerate(whoami_lines, start=3):
     t.gen_text(line, row_num=i)
     t.clone_frame(1)
 
@@ -428,9 +432,11 @@ t.gen_typing_text("interests", row_num=1, contin=True, speed=1)
 t.clone_frame(5)
 
 interests_lines = [
-    "LLM, AGI, GenAI, AI: Agents, Solutions, Frameworks, Multi-agents/ Swarms, Self-optimization, True-intelligence;",
+    "LLM, AGI, GenAI, AI: Agents, Solutions, Frameworks, Multi-agents/ Swarms,",
+    "Self-optimization, True-intelligence;",
     "High Frequency Algo-Trading & Quantitative Finance; ",
-    "Quantum Mechanics, Computing, Cryptography, Key Distribution, Algorithms, ML & Communication; ",
+    "Quantum Mechanics, Computing, Cryptography, Key Distribution, Algorithms,", 
+    "ML & Communication; ",
     "Particle Physics, Astrophysics & Nuclear Physics; ",
     "Algorithm Development; Backend Development; ",
     "Founder’s Office (GTM); Entrpreneurship.",
@@ -458,7 +464,8 @@ t.gen_typing_text("philosophy", row_num=1, contin=True, speed=1)
 t.clone_frame(5)
 
 philosophy_lines = [
-    "Show up. Everyday. No Matter how many times you've failed - or how horrible yesterday was. Cuz today is still yours!",
+    "Show up. Everyday. No Matter how many times you've failed - or how horrible yesterday was.",
+    "Cuz today is still yours!",
     "build > talk",
     "curiosity > credentials",
     "shipping > perfection",
