@@ -493,8 +493,8 @@ t.clone_frame(25)
 # --------------------------------------------
 # $ clear
 # --------------------------------------------
-t.gen_prompt(row_num=12)
-t.gen_typing_text("clear", row_num=12, contin=True, speed=1)
+t.gen_prompt(row_num=13)
+t.gen_typing_text("clear", row_num=13, contin=True, speed=1)
 t.clone_frame(5)
 t.clear_frame()
 
@@ -583,7 +583,7 @@ patch_latest_frames_with_image(
     SKILLS_PATH,
     frame_count=SKILLS_HOLD_FRAMES,
     max_w=720,
-    max_h=500,
+    max_h=520,
 )
 
 t.gen_text("", row_num=6)
@@ -705,8 +705,8 @@ t.clone_frame(35)
 # --------------------------------------------
 # $ clear
 # --------------------------------------------
-t.gen_prompt(row_num=16)
-t.gen_typing_text("clear", row_num=16, contin=True, speed=1)
+t.gen_prompt(row_num=17)
+t.gen_typing_text("clear", row_num=17, contin=True, speed=1)
 t.clone_frame(5)
 t.clear_frame()
 
@@ -725,15 +725,20 @@ t.gen_prompt(row_num=6)
 t.gen_typing_text('echo "Support {ClipWallet}"', row_num=6, contin=True, speed=1)
 t.clone_frame(5)
 t.gen_text(
-    "Support ClipWallet by staring the repo; fork for open-source development and download quick!",
+    "Support ClipWallet by:",
     row_num=7,
 )
-t.clone_frame(12)
+t.gen_text("staring the repo; ", row_num=8,)
+t.gen_text("fork for open-source development; and", row_num=9,)
+    t.gen_text("download quick!", row_num=10,)
+t.clone_frame(10)
 
 t.gen_text(
-    "(/qrcode(https://github.com/shaaravraghu/ClipWallet/))",
-    row_num=9,
+    "github.com/shaaravraghu/ClipWallet",
+    row_num=12,
 )
+t.clone_frame(40)
+
 
 # Hold the final terminal text, then show the real QR code in the same frames.
 FINAL_QR_HOLD_FRAMES = 75
