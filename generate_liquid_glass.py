@@ -329,11 +329,10 @@ def patch_latest_frames_with_qr(qr_path, frame_count):
     for frame_path in target_frames:
         frame = Image.open(frame_path).convert("RGBA")
 
-        # Put the QR at the lower-right of the terminal content area.
+        # Local frame coordinates (WIN_W x 450) — no TERMINAL_Y offset here.
         x = WIN_W - qr.width - 22
-        y = TERMINAL_Y + 450 - qr.height - 18
+        y = 450 - qr.height - 18
 
-        # White background guarantees strong QR contrast.
         backing = Image.new("RGBA", (qr.width + 12, qr.height + 12), "white")
         backing.alpha_composite(qr, (6, 6))
 
