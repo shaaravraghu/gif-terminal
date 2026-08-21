@@ -587,15 +587,15 @@ t.gen_typing_text("uptime", row_num=1, contin=True, speed=1)
 t.clone_frame(5)
 
 uptime_lines = [
-    "curiosity       [██████████] 100%",
-    "energy          [████████░░]  80%",
-    "patience        [██████░░░░]  60%",
-    "sleep           [███░░░░░░░]  30%",
-    "overthinking    [██████████]█████  150%",
-    "experimentation [██████████]██  120%",
-    "coffee          [██████████]  100%",
-    "unfinished_work [██████████]██████████ 200%",
-    "ideas           [██████████]████████████████████ 300%",
+    "curiosity       [##########] 100%",
+    "energy          [########--]  80%",
+    "patience        [######----]  60%",
+    "sleep           [###-------]  30%",
+    "overthinking    [##########]#####  150%",
+    "experimentation [##########]##  120%",
+    "coffee          [##########]  100%",
+    "unfinished_work [##########]########## 200%",
+    "ideas           [##########]#################### 300%",
 ]
 for i, line in enumerate(uptime_lines, start=2):
     t.gen_text(line, row_num=i)
