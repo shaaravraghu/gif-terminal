@@ -41,6 +41,9 @@ jobs:
       - name: Install dependencies
         run: pip install github-readme-terminal requests python-dotenv Pillow
 
+      - name: Install dependencies
+        run: pip install gifos Pillow qrcode[pil]
+
       - name: Generate GIF
         env:
           GITHUB_TOKEN: ${{ github.token }}
