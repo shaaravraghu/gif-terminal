@@ -159,48 +159,179 @@ def fetch_contribution_calendar():
 # 2. Hourly commit activity (best-effort, last ~90 days / 300 events)
 # ------------------------------------------------------------------
 
+# ------------------------------------------------------------------
+# 2. Hourly commit activity
+#    Uses GitHub Commit Search API and converts timestamps to IST.
+# ------------------------------------------------------------------
+
+from zoneinfo import ZoneInfo
+
+
+LOCAL_TIMEZONE = ZoneInfo("Asia/Kolkata")
+
+
 def fetch_hourly_activity():
     """
-    NOTE: GitHub's public Events API only returns roughly the last 90 days
-    (or 300 events, whichever is smaller) of PUBLIC activity. There is no
-    endpoint returning full-history hourly commit timestamps, so treat
-    this as a recent-activity sample, not a lifetime total.
+    Estimate hourly commit activity using GitHub's Commit Search API.
+
+    Unlike the public Events API, this works from actual commit timestamps.
+
+    Important:
+      - Search API covers public commits.
+      - GitHub Search has a maximum result window, so we split the
+        search into smaller time periods.
+      - Commit timestamps are converted from UTC to Asia/Kolkata (IST).
     """
+
     hourly = defaultdict(int)
-    page = 1
-    events_seen = 0
 
-    while page <= 10:  # API caps around 300 events / 10 pages of 30
-        resp = requests.get(
-            f"{REST_URL}/users/{GITHUB_USERNAME}/events/public",
-            headers=_headers(),
-            params={"per_page": 30, "page": page},
-            timeout=30,
+    # Search the recent period.
+    #
+    # We use 90 days here to keep the result comparable to the old
+    # Events API implementation while obtaining actual commit data.
+    from datetime import timedelta
+
+    now = datetime.now(timezone.utc)
+    start = now - timedelta(days=90)
+
+    # GitHub Search can become restrictive with large result sets.
+    # Split the 90-day period into 7-day windows.
+    window_start = start
+    commits_found = 0
+    search_requests = 0
+
+    while window_start < now:
+
+        window_end = min(
+            window_start + timedelta(days=7),
+            now
         )
-        if resp.status_code != 200:
-            break
-        batch = resp.json()
-        if not batch:
-            break
 
-        for event in batch:
-            if event.get("type") != "PushEvent":
-                continue
-            created_at = datetime.fromisoformat(
-                event["created_at"].replace("Z", "+00:00")
+        # GitHub's date syntax is inclusive.
+        query = (
+            f"author:{GITHUB_USERNAME} "
+            f"committer-date:{window_start.strftime('%Y-%m-%d')}"
+            f"..{window_end.strftime('%Y-%m-%d')}"
+        )
+
+        page = 1
+
+        while page <= 10:
+
+            resp = requests.get(
+                f"{REST_URL}/search/commits",
+                headers={
+                    **_headers(),
+                    "Accept": "application/vnd.github+json",
+                },
+                params={
+                    "q": query,
+                    "per_page": 100,
+                    "page": page,
+                },
+                timeout=30,
             )
-            hourly[created_at.hour] += len(event.get("payload", {}).get("commits", []))
-            events_seen += 1
 
-        page += 1
-        time.sleep(0.2)
+            search_requests += 1
 
-    return {
-        "hourly_commit_counts": {str(h): hourly.get(h, 0) for h in range(24)},
-        "events_sampled": events_seen,
-        "hourly_caveat": "approximation from public events, last ~90 days only",
+            if resp.status_code != 200:
+                print(
+                    f"WARNING: commit search failed "
+                    f"({resp.status_code}): {resp.text[:300]}",
+                    file=sys.stderr,
+                )
+                break
+
+            data = resp.json()
+
+            items = data.get("items", [])
+
+            if not items:
+                break
+
+            for item in items:
+
+                commit = item.get("commit") or {}
+
+                committer = commit.get("committer") or {}
+
+                timestamp = committer.get("date")
+
+                if not timestamp:
+                    continue
+
+                try:
+                    dt = datetime.fromisoformat(
+                        timestamp.replace("Z", "+00:00")
+                    )
+                except ValueError:
+                    continue
+
+                # Convert UTC -> India Standard Time.
+                local_dt = dt.astimezone(LOCAL_TIMEZONE)
+
+                hourly[local_dt.hour] += 1
+                commits_found += 1
+
+            # Stop if this was the last page.
+            if len(items) < 100:
+                break
+
+            page += 1
+
+            # Small delay to be polite to GitHub.
+            time.sleep(0.2)
+
+        window_start = window_end
+
+    counts = {
+        str(h): hourly.get(h, 0)
+        for h in range(24)
     }
 
+    peak_hour = max(
+        range(24),
+        key=lambda h: counts[str(h)]
+    )
+
+    peak_count = counts[str(peak_hour)]
+
+    # Human-readable daypart.
+    if 5 <= peak_hour < 12:
+        period = "Morning"
+    elif 12 <= peak_hour < 17:
+        period = "Afternoon"
+    elif 17 <= peak_hour < 21:
+        period = "Evening"
+    else:
+        period = "Night"
+
+    return {
+        "hourly_commit_counts": counts,
+
+        "hourly_timezone": "Asia/Kolkata",
+        "hourly_timezone_label": "IST (UTC+05:30)",
+
+        "hourly_period_days": 90,
+        "hourly_source": "GitHub Commit Search API",
+
+        "commits_sampled": commits_found,
+        "search_requests": search_requests,
+
+        "peak_hour": peak_hour,
+        "peak_hour_label": (
+            f"{peak_hour:02d}:00–{peak_hour:02d}:59 IST"
+        ),
+        "peak_hour_commit_count": peak_count,
+        "most_active_period": period,
+
+        "hourly_caveat": (
+            "Based on publicly searchable commits from the "
+            "last ~90 days; timestamps converted to IST. "
+            "This is an estimate of commit activity, not total "
+            "coding activity."
+        ),
+    }
 
 # ------------------------------------------------------------------
 # 4. Lines of code (additions/deletions) across owned repos
