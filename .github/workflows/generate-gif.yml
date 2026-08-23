@@ -84,3 +84,14 @@ jobs:
           # generated output rather than attempting a conflicting rebase.
           git merge -X ours origin/main -m "Merge: keep freshly generated GIF [skip ci]"
           git push origin HEAD:main
+
+      - name: Debug git status
+        run: |
+          echo "--- ls -la output.gif ---"
+          ls -la output.gif || echo "output.gif does not exist on disk!"
+          echo "--- git status ---"
+          git status
+          echo "--- git check-ignore ---"
+          git check-ignore -v output.gif || echo "output.gif is NOT ignored"
+          echo "--- git diff stat ---"
+          git diff --stat -- output.gif
