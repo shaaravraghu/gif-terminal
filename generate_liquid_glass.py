@@ -6,6 +6,44 @@ from PIL import Image, ImageFilter, ImageDraw, ImageChops
 from pathlib import Path
 from gifos.utils.convert_ansi_escape import ConvertAnsiEscape
 
+# ============================================
+# Optional: fetch fresh GitHub stats before building the GIF
+# ============================================
+# Runs fetch_github_stats.py in-process so a single `python gif_script.py`
+# (e.g. one CI step in GitHub Actions) produces an up-to-date
+# assets/github_stats.json before the "$ contrib_stats" terminal section
+# reads it further down.
+#
+# Controlled entirely by env vars so local runs without a token still work:
+#   GITHUB_TOKEN      - a PAT (see fetch_github_stats.py docstring for scopes)
+#   GITHUB_USERNAME    - the account to report on
+#   SKIP_STATS_FETCH   - set to "1" to skip this step even if a token is set
+#
+# If the token/username aren't set, or the fetch fails for any reason
+# (rate limit, network hiccup, etc.), this prints a warning and moves on —
+# it never aborts the GIF build. Whatever assets/github_stats.json already
+# exists on disk (or doesn't) is what the contrib_stats section will use.
+if os.environ.get("SKIP_STATS_FETCH") == "1":
+    print("INFO: SKIP_STATS_FETCH=1 set, skipping GitHub stats fetch.")
+elif os.environ.get("GITHUB_TOKEN") and os.environ.get("GITHUB_USERNAME"):
+    try:
+        import fetch_github_stats
+        print("INFO: fetching fresh GitHub stats before building the GIF...")
+        fetch_github_stats.main()
+    except Exception as e:
+        print(
+            f"WARNING: GitHub stats fetch failed ({type(e).__name__}: {e}). "
+            "Continuing without fresh stats — the contrib_stats section will "
+            "fall back to any existing assets/github_stats.json, or be "
+            "skipped if none exists."
+        )
+else:
+    print(
+        "INFO: GITHUB_TOKEN / GITHUB_USERNAME not set — skipping GitHub "
+        "stats fetch. The contrib_stats section will be skipped unless "
+        "assets/github_stats.json already exists on disk."
+    )
+
 # Override with high-contrast colors for blue glass background.
 # Avoid cyan/blue tones — they blend with the wallpaper.
 ConvertAnsiEscape.ANSI_ESCAPE_MAP_TXT_COLOR.update({
@@ -709,6 +747,73 @@ t.gen_prompt(row_num=18)
 t.gen_typing_text("clear", row_num=18, contin=True, speed=1)
 t.clone_frame(5)
 t.clear_frame()
+
+# --------------------------------------------
+# $ contrib_stats  (GitHub contribution + lines-of-code stats)
+# --------------------------------------------
+# Populated by running fetch_github_stats.py first, which requires a
+# GitHub Personal Access Token — see that script's docstring for scopes.
+# If assets/github_stats.json isn't there, this whole section is skipped
+# and the rest of the GIF builds normally.
+GITHUB_STATS_PATH = "assets/github_stats.json"
+
+if Path(GITHUB_STATS_PATH).exists():
+    import json as _json
+
+    with open(GITHUB_STATS_PATH) as _f:
+        _stats = _json.load(_f)
+
+    t.gen_prompt(row_num=1)
+    t.gen_typing_text("contrib_stats", row_num=1, contin=True, speed=1)
+    t.clone_frame(5)
+
+    _weekday_order = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    _avg_wd = _stats.get("avg_per_weekday", {})
+    _hourly = _stats.get("hourly_commit_counts", {})
+
+    if _hourly:
+        _peak_hour = max(_hourly, key=lambda h: _hourly[h])
+        _peak_count = _hourly[_peak_hour]
+    else:
+        _peak_hour, _peak_count = "N/A", 0
+
+    contrib_lines = [
+        "",
+        f"total contributions ... {_stats.get('total_contributions', 0)}",
+        f"avg / day ............. {_stats.get('avg_per_day', 0)}",
+        f"avg / week ............ {_stats.get('avg_per_week', 0)}",
+        "",
+        "avg contributions by weekday:",
+    ] + [
+        f"  {wd:<4} {_avg_wd.get(wd, 0)}" for wd in _weekday_order
+    ] + [
+        "",
+        f"peak commit hour ...... {_peak_hour}:00 UTC ({_peak_count} commits)",
+        "  (hourly stats: last ~90d sample only)",
+        "",
+        f"lines added ........... {_stats.get('total_additions', 0)}",
+        f"lines deleted .......... {_stats.get('total_deletions', 0)}",
+        f"net lines .............. {_stats.get('net_lines', 0)}",
+    ]
+
+    for i, line in enumerate(contrib_lines, start=2):
+        t.gen_text(line, row_num=i)
+        t.clone_frame(1)
+    t.clone_frame(25)
+
+    # --------------------------------------------
+    # $ clear
+    # --------------------------------------------
+    t.gen_prompt(row_num=(i + 2))
+    t.gen_typing_text("clear", row_num=(i + 2), contin=True, speed=1)
+    t.clone_frame(5)
+    t.clear_frame()
+else:
+    print(
+        f"WARNING: {GITHUB_STATS_PATH} not found — skipping the "
+        "contrib_stats section. Run fetch_github_stats.py first "
+        "(needs a GitHub PAT; see that script's docstring for scopes)."
+    )
 
 # --------------------------------------------
 # Final messages + ClipWallet QR
