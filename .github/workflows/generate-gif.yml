@@ -43,7 +43,8 @@ jobs:
 
       - name: Generate GIF
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.STATS_TOKEN }}
+          GITHUB_USERNAME: shaaravraghu
           # Automatically injected by GitHub — no changes needed when forking.
           GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
           # Select theme via repo variable: Settings → Variables → Actions → THEME
@@ -53,6 +54,7 @@ jobs:
           # Set via repo variable WALLPAPER (e.g. debian_dark_wallpaper.jpg)
           # Leave empty to use the default (debian_wallpaper.png)
           WALLPAPER: ${{ vars.WALLPAPER || inputs.wallpaper || '' }}
+
         run: |
           echo "Theme: $THEME  |  Wallpaper: ${WALLPAPER:-default}  |  User: $GITHUB_REPOSITORY_OWNER"
           case "$THEME" in
