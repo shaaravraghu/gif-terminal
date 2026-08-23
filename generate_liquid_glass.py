@@ -1,3 +1,4 @@
+# generate_liquid_glass.py
 import gifos
 import os
 import glob
