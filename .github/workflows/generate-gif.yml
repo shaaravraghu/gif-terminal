@@ -17,9 +17,13 @@ on:
   push:
     branches:
       - main
-
+      
 permissions:
   contents: write
+
+concurrency:
+  group: generate-terminal-gif
+  cancel-in-progress: false
 
 jobs:
   generate-gif:
@@ -69,5 +73,14 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add output.gif assets/github_stats.json
-          git diff --quiet && git diff --staged --quiet || \
-            (git commit -m "Update terminal GIF [skip ci]" && git pull --rebase && git push)
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "Update terminal GIF [skip ci]"
+          git fetch origin main
+          # Binary files (GIF/JSON) can't be line-merged, so if origin/main
+          # moved while this run was building, keep this run's freshly
+          # generated output rather than attempting a conflicting rebase.
+          git merge -X ours origin/main -m "Merge: keep freshly generated GIF [skip ci]"
+          git push origin HEAD:main
