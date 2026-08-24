@@ -750,71 +750,724 @@ t.clone_frame(5)
 t.clear_frame()
 
 # --------------------------------------------
-# $ contrib_stats  (GitHub contribution + lines-of-code stats)
+# $ contrib_stats
 # --------------------------------------------
-# Populated by running fetch_github_stats.py first, which requires a
-# GitHub Personal Access Token — see that script's docstring for scopes.
-# If assets/github_stats.json isn't there, this whole section is skipped
-# and the rest of the GIF builds normally.
+# GitHub contribution + commit activity analytics.
+#
+# Displayed as multiple terminal screens:
+#
+#   1. Overview + hourly percentage distribution
+#   2. Weekday × hour activity heatmap
+#   3. Code churn + activity streak
+#   4. Activity acceleration
+#
+# Each screen is cleared before the next one so the terminal
+# viewport never overflows.
+# --------------------------------------------
+
 GITHUB_STATS_PATH = "assets/github_stats.json"
 
 if Path(GITHUB_STATS_PATH).exists():
+
     import json as _json
 
-    with open(GITHUB_STATS_PATH) as _f:
+    with open(
+        GITHUB_STATS_PATH,
+        encoding="utf-8",
+    ) as _f:
         _stats = _json.load(_f)
 
+    # ==============================================================
+    # Shared data
+    # ==============================================================
+
+    _weekday_order = [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Sun",
+    ]
+
+    _avg_wd = _stats.get(
+        "avg_per_weekday",
+        {},
+    )
+
+    _hourly_counts = _stats.get(
+        "hourly_commit_counts",
+        {},
+    )
+
+    _hourly_percentages = _stats.get(
+        "hourly_commit_percentages",
+        {},
+    )
+
+    _hourly_total = _stats.get(
+        "hourly_total_commits",
+        _stats.get(
+            "commits_sampled",
+            0,
+        ),
+    )
+
+    _peak_hour = _stats.get(
+        "peak_hour",
+        0,
+    )
+
+    _peak_hour_percentage = _stats.get(
+        "peak_hour_percentage",
+        0,
+    )
+
+    # ==============================================================
+    # Helper: horizontal percentage bar
+    # ==============================================================
+
+    def _percentage_bar(
+        percentage,
+        width=24,
+    ):
+        """
+        Render a compact horizontal percentage bar.
+
+        Example:
+
+            [################........] 72.4%
+        """
+
+        try:
+            percentage = float(
+                percentage
+            )
+        except (
+            TypeError,
+            ValueError,
+        ):
+            percentage = 0
+
+        percentage = max(
+            0,
+            min(
+                100,
+                percentage,
+            ),
+        )
+
+        filled = round(
+            percentage
+            / 100
+            * width
+        )
+
+        return (
+            "["
+            + "#"
+            * filled
+            + "."
+            * (width - filled)
+            + "]"
+        )
+
+    # ==============================================================
+    # Helper: heatmap intensity
+    # ==============================================================
+
+    def _heatmap_symbol(
+        value,
+        maximum,
+    ):
+        """
+        Convert a commit count into a visual intensity.
+
+        Intensity scale:
+
+            0          -> " "
+            1-20%      -> "."
+            20-40%     -> ":"
+            40-60%     -> "+"
+            60-80%     -> "#"
+            80-100%    -> "@"
+
+        ASCII-only characters are intentionally used because
+        gifos' terminal font is Latin-1 based.
+        """
+
+        if not value:
+            return " "
+
+        if not maximum:
+            return "."
+
+        ratio = (
+            value / maximum
+        )
+
+        if ratio <= 0.20:
+            return "."
+
+        elif ratio <= 0.40:
+            return ":"
+
+        elif ratio <= 0.60:
+            return "+"
+
+        elif ratio <= 0.80:
+            return "#"
+
+        else:
+            return "@"
+
+    # ==============================================================
+    # SCREEN 1
+    # Overview + hourly percentage distribution
+    # ==============================================================
+
     t.gen_prompt(row_num=1)
-    t.gen_typing_text("contrib_stats", row_num=1, contin=True, speed=1)
+
+    t.gen_typing_text(
+        "contrib_stats",
+        row_num=1,
+        contin=True,
+        speed=1,
+    )
+
     t.clone_frame(5)
-
-    _weekday_order = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-    _avg_wd = _stats.get("avg_per_weekday", {})
-    _hourly = _stats.get("hourly_commit_counts", {})
-
-    if _hourly:
-        _peak_hour = max(_hourly, key=lambda h: _hourly[h])
-        _peak_count = _hourly[_peak_hour]
-    else:
-        _peak_hour, _peak_count = "N/A", 0
 
     contrib_lines = [
         "",
-        f"total contributions ... {_stats.get('total_contributions', 0)}",
-        f"avg / day ............. {_stats.get('avg_per_day', 0)}",
-        f"avg / week ............ {_stats.get('avg_per_week', 0)}",
+        "GITHUB ACTIVITY",
+        "------------------------------",
+        (
+            f"total contributions .. "
+            f"{_stats.get('total_contributions', 0)}"
+        ),
+        (
+            f"avg / day ............. "
+            f"{_stats.get('avg_per_day', 0)}"
+        ),
+        (
+            f"avg / week ............ "
+            f"{_stats.get('avg_per_week', 0)}"
+        ),
+        (
+            f"commits sampled ....... "
+            f"{_hourly_total}"
+        ),
+        (
+            f"activity window ....... "
+            f"{_stats.get('period_days', 90)} days"
+        ),
         "",
-        "avg contributions by weekday:",
-    ] + [
-        f"  {wd:<4} {_avg_wd.get(wd, 0)}" for wd in _weekday_order
-    ] + [
-        "",
-        f"peak commit hour ...... {_peak_hour}:00 UTC ({_peak_count} commits)",
-        "  (hourly stats: last ~90d sample only)",
-        "",
-        f"lines added ........... {_stats.get('total_additions', 0)}",
-        f"lines deleted .......... {_stats.get('total_deletions', 0)}",
-        f"net lines .............. {_stats.get('net_lines', 0)}",
+        "AVG CONTRIBUTIONS / WEEKDAY",
     ]
 
-    for i, line in enumerate(contrib_lines, start=2):
-        t.gen_text(line, row_num=i)
-        t.clone_frame(1)
-    t.clone_frame(25)
+    for wd in _weekday_order:
 
-    # --------------------------------------------
-    # $ clear
-    # --------------------------------------------
-    t.gen_prompt(row_num=(i + 2))
-    t.gen_typing_text("clear", row_num=(i + 2), contin=True, speed=1)
+        contrib_lines.append(
+            f"  {wd:<4} "
+            f"{_avg_wd.get(wd, 0)}"
+        )
+
+    contrib_lines.extend([
+        "",
+        "HOURLY CONTRIBUTIONS",
+        "------------------------------",
+    ])
+
+    for hour in range(24):
+
+        hour_key = str(
+            hour
+        )
+
+        percentage = _hourly_percentages.get(
+            hour_key,
+            _hourly_percentages.get(
+                f"{hour:02d}",
+                0,
+            ),
+        )
+
+        count = _hourly_counts.get(
+            hour_key,
+            _hourly_counts.get(
+                f"{hour:02d}",
+                0,
+            ),
+        )
+
+        bar = _percentage_bar(
+            percentage,
+            width=18,
+        )
+
+        marker = (
+            " <PEAK>"
+            if hour == _peak_hour
+            else ""
+        )
+
+        contrib_lines.append(
+            f"  {hour:02d}:00 "
+            f"{bar} "
+            f"{percentage:5.2f}% "
+            f"({count})"
+            f"{marker}"
+        )
+
+    # Keep this screen within the terminal viewport.
+    # Display the first 21 lines, then pause.
+    for i, line in enumerate(
+        contrib_lines[:21],
+        start=2,
+    ):
+        t.gen_text(
+            line,
+            row_num=i,
+        )
+
+        if line:
+            t.clone_frame(1)
+
+    t.clone_frame(35)
+
+    # ==============================================================
+    # CLEAR → SCREEN 2
+    # Activity heatmap
+    # ==============================================================
+
+    t.gen_prompt(
+        row_num=22,
+    )
+
+    t.gen_typing_text(
+        "clear",
+        row_num=22,
+        contin=True,
+        speed=1,
+    )
+
     t.clone_frame(5)
+
     t.clear_frame()
+
+    # --------------------------------------------------------------
+    # Extract heatmap
+    # --------------------------------------------------------------
+
+    _heatmap = (
+        _stats
+        .get(
+            "activity_heatmap",
+            {},
+        )
+        .get(
+            "matrix_counts",
+            {},
+        )
+    )
+
+    # Backwards compatibility with the old JSON structure.
+    if not _heatmap:
+
+        _heatmap = (
+            _stats
+            .get(
+                "activity_heatmap",
+                {},
+            )
+            .get(
+                "matrix",
+                {},
+            )
+        )
+
+    _heatmap_max = 0
+
+    for day in _weekday_order:
+
+        for hour in range(24):
+
+            hour_key = f"{hour:02d}"
+
+            value = (
+                _heatmap
+                .get(
+                    day,
+                    {},
+                )
+                .get(
+                    hour_key,
+                    0,
+                )
+            )
+
+            _heatmap_max = max(
+                _heatmap_max,
+                value,
+            )
+
+    heatmap_lines = [
+        "",
+        "ACTIVITY HEATMAP",
+        "------------------------------",
+        "commit density by IST hour",
+        "",
+        "     "
+        + "".join(
+            f"{h:02d} "
+            for h in range(24)
+        ),
+    ]
+
+    for day in _weekday_order:
+
+        row = (
+            f"{day:<4} "
+        )
+
+        for hour in range(24):
+
+            hour_key = (
+                f"{hour:02d}"
+            )
+
+            value = (
+                _heatmap
+                .get(
+                    day,
+                    {},
+                )
+                .get(
+                    hour_key,
+                    0,
+                )
+            )
+
+            symbol = _heatmap_symbol(
+                value,
+                _heatmap_max,
+            )
+
+            row += (
+                f"{symbol}  "
+            )
+
+        heatmap_lines.append(
+            row
+        )
+
+    heatmap_lines.extend([
+        "",
+        "density:",
+        "  ' ' none",
+        "  . low",
+        "  : medium-low",
+        "  + medium",
+        "  # high",
+        "  @ peak",
+        "",
+        (
+            f"max bucket ........ "
+            f"{_heatmap_max} commits"
+        ),
+        (
+            f"peak hour .......... "
+            f"{_peak_hour:02d}:00 "
+            f"({_peak_hour_percentage:.2f}%)"
+        ),
+    ])
+
+    for i, line in enumerate(
+        heatmap_lines[:22],
+        start=1,
+    ):
+
+        t.gen_text(
+            line,
+            row_num=i,
+        )
+
+        if line:
+            t.clone_frame(1)
+
+    t.clone_frame(40)
+
+    # ==============================================================
+    # CLEAR → SCREEN 3
+    # Code churn + activity streak
+    # ==============================================================
+
+    t.gen_prompt(
+        row_num=23,
+    )
+
+    t.gen_typing_text(
+        "clear",
+        row_num=23,
+        contin=True,
+        speed=1,
+    )
+
+    t.clone_frame(5)
+
+    t.clear_frame()
+
+    _churn = _stats.get(
+        "code_churn",
+        {},
+    )
+
+    _streak = _stats.get(
+        "activity_streak",
+        {},
+    )
+
+    churn_lines = [
+        "",
+        "CODE CHURN",
+        "------------------------------",
+        (
+            f"scope ............... "
+            f"{_churn.get('scope', 'N/A')}"
+        ),
+        (
+            f"lines added ......... "
+            f"{_churn.get('additions', 0):,}"
+        ),
+        (
+            f"lines deleted ....... "
+            f"{_churn.get('deletions', 0):,}"
+        ),
+        (
+            f"total churn ......... "
+            f"{_churn.get('total_churn', 0):,}"
+        ),
+        (
+            f"net lines ........... "
+            f"{_churn.get('net_lines', 0):,}"
+        ),
+        (
+            f"deletion ratio ...... "
+            f"{_churn.get('deletion_ratio', 0)}"
+        ),
+        (
+            f"deletion / churn .... "
+            f"{_churn.get('deletion_percentage_of_churn', 0)}%"
+        ),
+        "",
+        "ACTIVITY STREAK",
+        "------------------------------",
+        (
+            f"window .............. "
+            f"{_streak.get('period_days', 90)} days"
+        ),
+        (
+            f"active days ......... "
+            f"{_streak.get('active_days', 0)}"
+        ),
+        (
+            f"inactive days ....... "
+            f"{_streak.get('inactive_days', 0)}"
+        ),
+        (
+            f"longest streak ...... "
+            f"{_streak.get('longest_streak', 0)} days"
+        ),
+        (
+            f"current streak ...... "
+            f"{_streak.get('current_streak', 0)} days"
+        ),
+        (
+            f"avg active day ...... "
+            f"{_streak.get('average_active_day_contributions', 0)}"
+        ),
+    ]
+
+    for i, line in enumerate(
+        churn_lines,
+        start=1,
+    ):
+
+        t.gen_text(
+            line,
+            row_num=i,
+        )
+
+        if line:
+            t.clone_frame(1)
+
+    t.clone_frame(40)
+
+    # ==============================================================
+    # CLEAR → SCREEN 4
+    # Activity acceleration
+    # ==============================================================
+
+    t.gen_prompt(
+        row_num=22,
+    )
+
+    t.gen_typing_text(
+        "clear",
+        row_num=22,
+        contin=True,
+        speed=1,
+    )
+
+    t.clone_frame(5)
+
+    t.clear_frame()
+
+    _acceleration = _stats.get(
+        "activity_acceleration",
+        {},
+    )
+
+    _a30 = _acceleration.get(
+        "30_day_average",
+        0,
+    )
+
+    _a60 = _acceleration.get(
+        "60_day_average",
+        0,
+    )
+
+    _a90 = _acceleration.get(
+        "90_day_average",
+        0,
+    )
+
+    _a180 = _acceleration.get(
+        "180_day_average",
+        0,
+    )
+
+    _a365 = _acceleration.get(
+        "365_day_average",
+        0,
+    )
+
+    acceleration_lines = [
+        "",
+        "ACTIVITY ACCELERATION",
+        "------------------------------",
+        "",
+        "average daily contributions:",
+        "",
+        (
+            f"  30d   "
+            f"{_a30:>7.2f}   "
+            f"{_percentage_bar("
+            "min((_a30 / max(_a365, 1)) * 100, 100),"
+            "18"
+            ")}"
+        ),
+        (
+            f"  60d   "
+            f"{_a60:>7.2f}   "
+            f"{_percentage_bar("
+            "min((_a60 / max(_a365, 1)) * 100, 100),"
+            "18"
+            ")}"
+        ),
+        (
+            f"  90d   "
+            f"{_a90:>7.2f}   "
+            f"{_percentage_bar("
+            "min((_a90 / max(_a365, 1)) * 100, 100),"
+            "18"
+            ")}"
+        ),
+        (
+            f"  180d  "
+            f"{_a180:>7.2f}   "
+            f"{_percentage_bar("
+            "min((_a180 / max(_a365, 1)) * 100, 100),"
+            "18"
+            ")}"
+        ),
+        (
+            f"  365d  "
+            f"{_a365:>7.2f}   "
+            f"{_percentage_bar("
+            "100 if _a365 else 0,"
+            "18"
+            ")}"
+        ),
+        "",
+        "ACCELERATION RATIOS",
+        "------------------------------",
+        (
+            f"30d / 90d .......... "
+            f"{_acceleration.get("
+            "'30_vs_90_ratio', 0"
+            ")}x"
+        ),
+        (
+            f"90d / 180d ......... "
+            f"{_acceleration.get("
+            "'90_vs_180_ratio', 0"
+            ")}x"
+        ),
+        (
+            f"90d / 365d ......... "
+            f"{_acceleration.get("
+            "'90_vs_365_ratio', 0"
+            ")}x"
+        ),
+        "",
+        "trend = recent activity / historical activity",
+    ]
+
+    for i, line in enumerate(
+        acceleration_lines,
+        start=1,
+    ):
+
+        t.gen_text(
+            line,
+            row_num=i,
+        )
+
+        if line:
+            t.clone_frame(1)
+
+    t.clone_frame(40)
+
+    # ==============================================================
+    # CLEAR → continue normal terminal sequence
+    # ==============================================================
+
+    t.gen_prompt(
+        row_num=22,
+    )
+
+    t.gen_typing_text(
+        "clear",
+        row_num=22,
+        contin=True,
+        speed=1,
+    )
+
+    t.clone_frame(5)
+
+    t.clear_frame()
+
 else:
+
     print(
         f"WARNING: {GITHUB_STATS_PATH} not found — skipping the "
         "contrib_stats section. Run fetch_github_stats.py first "
         "(needs a GitHub PAT; see that script's docstring for scopes)."
     )
+
 
 # --------------------------------------------
 # Final messages + ClipWallet QR
