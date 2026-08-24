@@ -522,7 +522,7 @@ def fetch_recent_commits():
 
         page = 1
 
-        while page <= 100:
+        while page <= 500:
 
             resp = requests.get(
                 f"{REST_URL}/search/commits",
