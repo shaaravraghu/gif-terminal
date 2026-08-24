@@ -1,6 +1,6 @@
 {
   "username": "shaaravraghu",
-  "generated_at": "2026-08-24T02:16:35.631681+00:00",
+  "generated_at": "2026-08-24T06:22:45.942049+00:00",
   "total_contributions": 2516,
   "avg_per_day": 6.87,
   "avg_per_week": 47.47,
@@ -24,8 +24,8 @@
   },
   "weeks_covered": 53,
   "hourly_commit_counts": {
-    "0": 32,
-    "1": 5,
+    "0": 14,
+    "1": 3,
     "2": 1,
     "3": 1,
     "4": 0,
@@ -33,148 +33,1036 @@
     "6": 0,
     "7": 0,
     "8": 0,
-    "9": 12,
-    "10": 75,
-    "11": 88,
-    "12": 52,
-    "13": 84,
-    "14": 43,
-    "15": 63,
-    "16": 43,
-    "17": 69,
-    "18": 103,
-    "19": 74,
-    "20": 26,
-    "21": 74,
-    "22": 104,
-    "23": 69
+    "9": 0,
+    "10": 12,
+    "11": 11,
+    "12": 6,
+    "13": 25,
+    "14": 12,
+    "15": 15,
+    "16": 2,
+    "17": 10,
+    "18": 6,
+    "19": 10,
+    "20": 9,
+    "21": 9,
+    "22": 49,
+    "23": 14
   },
   "hourly_timezone": "Asia/Kolkata",
   "hourly_timezone_label": "IST (UTC+05:30)",
   "hourly_period_days": 90,
   "hourly_source": "GitHub Commit Search API",
-  "commits_sampled": 1018,
-  "search_requests": 19,
+  "commits_sampled": 209,
   "peak_hour": 22,
   "peak_hour_label": "22:00\u201322:59 IST",
-  "peak_hour_commit_count": 104,
+  "peak_hour_commit_count": 49,
   "most_active_period": "Night",
-  "hourly_caveat": "Based on publicly searchable commits from the last ~90 days; timestamps converted to IST. This is an estimate of commit activity, not total coding activity.",
   "total_additions": 4961330,
   "total_deletions": 33942,
+  "total_commits": 1297,
   "net_lines": 4927388,
   "per_repo": {
     "Advanced_MERN_Syntax": {
       "additions": 43680,
-      "deletions": 1820
+      "deletions": 1820,
+      "commits": 122
     },
     "Agentic-AI-MCP-Syntax": {
       "additions": 3148,
-      "deletions": 0
+      "deletions": 0,
+      "commits": 4
     },
     "AI_IDE": {
       "additions": 22,
-      "deletions": 0
+      "deletions": 0,
+      "commits": 1
     },
     "App_Development_Frameworks_Syntax": {
       "additions": 30932,
-      "deletions": 20069
+      "deletions": 20069,
+      "commits": 39
     },
     "Atlassian_Codegeist_WorkHub": {
       "additions": 3424801,
-      "deletions": 0
+      "deletions": 0,
+      "commits": 1
     },
     "Attack_Capital_Front_End_Project_AI_Audio_Scribing_Meeting_Transcription": {
       "additions": 12471,
-      "deletions": 5
+      "deletions": 5,
+      "commits": 13
     },
     "ClipWallet": {
       "additions": 86828,
-      "deletions": 1165
+      "deletions": 1165,
+      "commits": 32
     },
     "Coding_Syntax": {
       "additions": 2762,
-      "deletions": 68
+      "deletions": 68,
+      "commits": 18
     },
     "Computer_Networks_Lab": {
       "additions": 1434,
-      "deletions": 257
+      "deletions": 257,
+      "commits": 37
     },
     "Computer_Oriented_Statistics_Lab": {
       "additions": 6010,
-      "deletions": 2540
+      "deletions": 2540,
+      "commits": 66
     },
     "CONM": {
       "additions": 917,
-      "deletions": 106
+      "deletions": 106,
+      "commits": 17
     },
     "Crypto_BTC_Trader": {
       "additions": 1260892,
-      "deletions": 454
+      "deletions": 454,
+      "commits": 37
     },
     "Dedalus_Labs_BreakInSF_Project_Assistant_Swarm_Agents": {
       "additions": 446,
-      "deletions": 41
+      "deletions": 41,
+      "commits": 7
     },
     "DSA": {
       "additions": 2008,
-      "deletions": 433
+      "deletions": 433,
+      "commits": 95
     },
     "Financial_AI_Advisor": {
       "additions": 873,
-      "deletions": 65
+      "deletions": 65,
+      "commits": 21
     },
     "GitHub_Guide": {
       "additions": 1600,
-      "deletions": 61
+      "deletions": 61,
+      "commits": 36
     },
     "GSSoC_2026": {
       "additions": 27,
-      "deletions": 0
+      "deletions": 0,
+      "commits": 3
     },
     "IICPC": {
       "additions": 16887,
-      "deletions": 1951
+      "deletions": 1951,
+      "commits": 26
     },
     "Intern_Online_Test": {
       "additions": 162,
-      "deletions": 44
+      "deletions": 44,
+      "commits": 5
     },
     "JAVA_OOPS": {
       "additions": 1335,
-      "deletions": 83
+      "deletions": 83,
+      "commits": 10
     },
     "Operating_System_Lab_Linux_Notes": {
       "additions": 4429,
-      "deletions": 1191
+      "deletions": 1191,
+      "commits": 57
     },
     "Python_Libraries_Syntax": {
       "additions": 14407,
-      "deletions": 16
+      "deletions": 16,
+      "commits": 24
     },
     "Python_Syntax": {
       "additions": 2840,
-      "deletions": 127
+      "deletions": 127,
+      "commits": 108
     },
     "Quantum_Computing_Algorithms": {
       "additions": 4740,
-      "deletions": 16
+      "deletions": 16,
+      "commits": 91
     },
     "shaaravraghu": {
       "additions": 3627,
-      "deletions": 2159
+      "deletions": 2159,
+      "commits": 186
     },
     "SynnccIT": {
       "additions": 25337,
-      "deletions": 126
+      "deletions": 126,
+      "commits": 10
     },
     "Veda-AI_NSRCEL-IIMB": {
       "additions": 1721,
-      "deletions": 199
+      "deletions": 199,
+      "commits": 2
     },
     "Workday-Issues": {
       "additions": 6994,
-      "deletions": 946
+      "deletions": 946,
+      "commits": 229
     }
+  },
+  "activity_heatmap": {
+    "timezone": "Asia/Kolkata",
+    "period_days": 90,
+    "metric": "commits",
+    "days": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat",
+      "Sun"
+    ],
+    "hours": [
+      "00",
+      "01",
+      "02",
+      "03",
+      "04",
+      "05",
+      "06",
+      "07",
+      "08",
+      "09",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23"
+    ],
+    "matrix": {
+      "Mon": {
+        "00": 1,
+        "01": 0,
+        "02": 1,
+        "03": 0,
+        "04": 0,
+        "05": 0,
+        "06": 0,
+        "07": 0,
+        "08": 0,
+        "09": 0,
+        "10": 0,
+        "11": 1,
+        "12": 1,
+        "13": 7,
+        "14": 0,
+        "15": 6,
+        "16": 2,
+        "17": 8,
+        "18": 2,
+        "19": 1,
+        "20": 2,
+        "21": 0,
+        "22": 1,
+        "23": 0
+      },
+      "Tue": {
+        "00": 1,
+        "01": 0,
+        "02": 0,
+        "03": 1,
+        "04": 0,
+        "05": 0,
+        "06": 0,
+        "07": 0,
+        "08": 0,
+        "09": 0,
+        "10": 0,
+        "11": 5,
+        "12": 1,
+        "13": 7,
+        "14": 2,
+        "15": 2,
+        "16": 0,
+        "17": 0,
+        "18": 0,
+        "19": 0,
+        "20": 1,
+        "21": 0,
+        "22": 12,
+        "23": 1
+      },
+      "Wed": {
+        "00": 2,
+        "01": 0,
+        "02": 0,
+        "03": 0,
+        "04": 0,
+        "05": 0,
+        "06": 0,
+        "07": 0,
+        "08": 0,
+        "09": 0,
+        "10": 1,
+        "11": 0,
+        "12": 1,
+        "13": 5,
+        "14": 8,
+        "15": 1,
+        "16": 0,
+        "17": 2,
+        "18": 1,
+        "19": 3,
+        "20": 2,
+        "21": 5,
+        "22": 27,
+        "23": 2
+      },
+      "Thu": {
+        "00": 1,
+        "01": 1,
+        "02": 0,
+        "03": 0,
+        "04": 0,
+        "05": 0,
+        "06": 0,
+        "07": 0,
+        "08": 0,
+        "09": 0,
+        "10": 7,
+        "11": 1,
+        "12": 3,
+        "13": 6,
+        "14": 2,
+        "15": 5,
+        "16": 0,
+        "17": 0,
+        "18": 3,
+        "19": 5,
+        "20": 1,
+        "21": 3,
+        "22": 4,
+        "23": 7
+      },
+      "Fri": {
+        "00": 7,
+        "01": 2,
+        "02": 0,
+        "03": 0,
+        "04": 0,
+        "05": 0,
+        "06": 0,
+        "07": 0,
+        "08": 0,
+        "09": 0,
+        "10": 4,
+        "11": 4,
+        "12": 0,
+        "13": 0,
+        "14": 0,
+        "15": 0,
+        "16": 0,
+        "17": 0,
+        "18": 0,
+        "19": 0,
+        "20": 0,
+        "21": 0,
+        "22": 0,
+        "23": 2
+      },
+      "Sat": {
+        "00": 1,
+        "01": 0,
+        "02": 0,
+        "03": 0,
+        "04": 0,
+        "05": 0,
+        "06": 0,
+        "07": 0,
+        "08": 0,
+        "09": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0,
+        "13": 0,
+        "14": 0,
+        "15": 0,
+        "16": 0,
+        "17": 0,
+        "18": 0,
+        "19": 0,
+        "20": 3,
+        "21": 1,
+        "22": 4,
+        "23": 2
+      },
+      "Sun": {
+        "00": 1,
+        "01": 0,
+        "02": 0,
+        "03": 0,
+        "04": 0,
+        "05": 0,
+        "06": 0,
+        "07": 0,
+        "08": 0,
+        "09": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0,
+        "13": 0,
+        "14": 0,
+        "15": 1,
+        "16": 0,
+        "17": 0,
+        "18": 0,
+        "19": 1,
+        "20": 0,
+        "21": 0,
+        "22": 1,
+        "23": 0
+      }
+    }
+  },
+  "activity_streak": {
+    "period_days": 90,
+    "active_days": 75,
+    "inactive_days": 15,
+    "longest_streak": 56,
+    "current_streak": 0,
+    "average_active_day_contributions": 20.07
+  },
+  "activity_acceleration": {
+    "30_day_average": 39.8,
+    "60_day_average": 21.23,
+    "90_day_average": 16.72,
+    "180_day_average": 13.27,
+    "365_day_average": 6.89,
+    "30_vs_90_ratio": 2.38,
+    "90_vs_180_ratio": 1.26,
+    "90_vs_365_ratio": 2.427
+  },
+  "repository_concentration": {
+    "metric": "Herfindahl-Hirschman Index",
+    "basis": "commits",
+    "period_days": 90,
+    "hhi": 0.1264,
+    "effective_repositories": 7.91,
+    "repository_shares": {
+      "shaaravraghu": 0.2297,
+      "GitHub_Guide": 0.134,
+      "IICPC": 0.134,
+      "Dvi": 0.1244,
+      "Weekly_Tasks_Nihar": 0.0861,
+      "may-tasks": 0.0718,
+      "Notepad": 0.0622,
+      "DSA": 0.0574,
+      "Coding_Syntax": 0.0335,
+      "Veda-AI_NSRCEL-IIMB": 0.0287,
+      "Applications": 0.0191,
+      "GSSoC_2026": 0.0144,
+      "Weekly_Tasks_Sneha": 0.0048
+    },
+    "repository_commits": {
+      "shaaravraghu": 48,
+      "GitHub_Guide": 28,
+      "IICPC": 28,
+      "Dvi": 26,
+      "Weekly_Tasks_Nihar": 18,
+      "may-tasks": 15,
+      "Notepad": 13,
+      "DSA": 12,
+      "Coding_Syntax": 7,
+      "Veda-AI_NSRCEL-IIMB": 6,
+      "Applications": 4,
+      "GSSoC_2026": 3,
+      "Weekly_Tasks_Sneha": 1
+    }
+  },
+  "code_churn": {
+    "scope": "repository_history",
+    "additions": 4961330,
+    "deletions": 33942,
+    "total_churn": 4995272,
+    "net_lines": 4927388,
+    "deletion_ratio": 0.0068,
+    "deletion_percentage_of_churn": 0.68
+  },
+  "repository_efficiency": {
+    "Advanced_MERN_Syntax": {
+      "commits": 122,
+      "additions": 43680,
+      "deletions": 1820,
+      "net_lines": 41860,
+      "code_churn": 45500,
+      "net_lines_per_commit": 343.11,
+      "additions_per_commit": 358.03,
+      "deletions_per_commit": 14.92,
+      "churn_per_commit": 372.95
+    },
+    "Agentic-AI-MCP-Syntax": {
+      "commits": 4,
+      "additions": 3148,
+      "deletions": 0,
+      "net_lines": 3148,
+      "code_churn": 3148,
+      "net_lines_per_commit": 787.0,
+      "additions_per_commit": 787.0,
+      "deletions_per_commit": 0.0,
+      "churn_per_commit": 787.0
+    },
+    "AI_IDE": {
+      "commits": 1,
+      "additions": 22,
+      "deletions": 0,
+      "net_lines": 22,
+      "code_churn": 22,
+      "net_lines_per_commit": 22.0,
+      "additions_per_commit": 22.0,
+      "deletions_per_commit": 0.0,
+      "churn_per_commit": 22.0
+    },
+    "App_Development_Frameworks_Syntax": {
+      "commits": 39,
+      "additions": 30932,
+      "deletions": 20069,
+      "net_lines": 10863,
+      "code_churn": 51001,
+      "net_lines_per_commit": 278.54,
+      "additions_per_commit": 793.13,
+      "deletions_per_commit": 514.59,
+      "churn_per_commit": 1307.72
+    },
+    "Atlassian_Codegeist_WorkHub": {
+      "commits": 1,
+      "additions": 3424801,
+      "deletions": 0,
+      "net_lines": 3424801,
+      "code_churn": 3424801,
+      "net_lines_per_commit": 3424801.0,
+      "additions_per_commit": 3424801.0,
+      "deletions_per_commit": 0.0,
+      "churn_per_commit": 3424801.0
+    },
+    "Attack_Capital_Front_End_Project_AI_Audio_Scribing_Meeting_Transcription": {
+      "commits": 13,
+      "additions": 12471,
+      "deletions": 5,
+      "net_lines": 12466,
+      "code_churn": 12476,
+      "net_lines_per_commit": 958.92,
+      "additions_per_commit": 959.31,
+      "deletions_per_commit": 0.38,
+      "churn_per_commit": 959.69
+    },
+    "ClipWallet": {
+      "commits": 32,
+      "additions": 86828,
+      "deletions": 1165,
+      "net_lines": 85663,
+      "code_churn": 87993,
+      "net_lines_per_commit": 2676.97,
+      "additions_per_commit": 2713.38,
+      "deletions_per_commit": 36.41,
+      "churn_per_commit": 2749.78
+    },
+    "Coding_Syntax": {
+      "commits": 18,
+      "additions": 2762,
+      "deletions": 68,
+      "net_lines": 2694,
+      "code_churn": 2830,
+      "net_lines_per_commit": 149.67,
+      "additions_per_commit": 153.44,
+      "deletions_per_commit": 3.78,
+      "churn_per_commit": 157.22
+    },
+    "Computer_Networks_Lab": {
+      "commits": 37,
+      "additions": 1434,
+      "deletions": 257,
+      "net_lines": 1177,
+      "code_churn": 1691,
+      "net_lines_per_commit": 31.81,
+      "additions_per_commit": 38.76,
+      "deletions_per_commit": 6.95,
+      "churn_per_commit": 45.7
+    },
+    "Computer_Oriented_Statistics_Lab": {
+      "commits": 66,
+      "additions": 6010,
+      "deletions": 2540,
+      "net_lines": 3470,
+      "code_churn": 8550,
+      "net_lines_per_commit": 52.58,
+      "additions_per_commit": 91.06,
+      "deletions_per_commit": 38.48,
+      "churn_per_commit": 129.55
+    },
+    "CONM": {
+      "commits": 17,
+      "additions": 917,
+      "deletions": 106,
+      "net_lines": 811,
+      "code_churn": 1023,
+      "net_lines_per_commit": 47.71,
+      "additions_per_commit": 53.94,
+      "deletions_per_commit": 6.24,
+      "churn_per_commit": 60.18
+    },
+    "Crypto_BTC_Trader": {
+      "commits": 37,
+      "additions": 1260892,
+      "deletions": 454,
+      "net_lines": 1260438,
+      "code_churn": 1261346,
+      "net_lines_per_commit": 34065.89,
+      "additions_per_commit": 34078.16,
+      "deletions_per_commit": 12.27,
+      "churn_per_commit": 34090.43
+    },
+    "Dedalus_Labs_BreakInSF_Project_Assistant_Swarm_Agents": {
+      "commits": 7,
+      "additions": 446,
+      "deletions": 41,
+      "net_lines": 405,
+      "code_churn": 487,
+      "net_lines_per_commit": 57.86,
+      "additions_per_commit": 63.71,
+      "deletions_per_commit": 5.86,
+      "churn_per_commit": 69.57
+    },
+    "DSA": {
+      "commits": 95,
+      "additions": 2008,
+      "deletions": 433,
+      "net_lines": 1575,
+      "code_churn": 2441,
+      "net_lines_per_commit": 16.58,
+      "additions_per_commit": 21.14,
+      "deletions_per_commit": 4.56,
+      "churn_per_commit": 25.69
+    },
+    "Financial_AI_Advisor": {
+      "commits": 21,
+      "additions": 873,
+      "deletions": 65,
+      "net_lines": 808,
+      "code_churn": 938,
+      "net_lines_per_commit": 38.48,
+      "additions_per_commit": 41.57,
+      "deletions_per_commit": 3.1,
+      "churn_per_commit": 44.67
+    },
+    "GitHub_Guide": {
+      "commits": 36,
+      "additions": 1600,
+      "deletions": 61,
+      "net_lines": 1539,
+      "code_churn": 1661,
+      "net_lines_per_commit": 42.75,
+      "additions_per_commit": 44.44,
+      "deletions_per_commit": 1.69,
+      "churn_per_commit": 46.14
+    },
+    "GSSoC_2026": {
+      "commits": 3,
+      "additions": 27,
+      "deletions": 0,
+      "net_lines": 27,
+      "code_churn": 27,
+      "net_lines_per_commit": 9.0,
+      "additions_per_commit": 9.0,
+      "deletions_per_commit": 0.0,
+      "churn_per_commit": 9.0
+    },
+    "IICPC": {
+      "commits": 26,
+      "additions": 16887,
+      "deletions": 1951,
+      "net_lines": 14936,
+      "code_churn": 18838,
+      "net_lines_per_commit": 574.46,
+      "additions_per_commit": 649.5,
+      "deletions_per_commit": 75.04,
+      "churn_per_commit": 724.54
+    },
+    "Intern_Online_Test": {
+      "commits": 5,
+      "additions": 162,
+      "deletions": 44,
+      "net_lines": 118,
+      "code_churn": 206,
+      "net_lines_per_commit": 23.6,
+      "additions_per_commit": 32.4,
+      "deletions_per_commit": 8.8,
+      "churn_per_commit": 41.2
+    },
+    "JAVA_OOPS": {
+      "commits": 10,
+      "additions": 1335,
+      "deletions": 83,
+      "net_lines": 1252,
+      "code_churn": 1418,
+      "net_lines_per_commit": 125.2,
+      "additions_per_commit": 133.5,
+      "deletions_per_commit": 8.3,
+      "churn_per_commit": 141.8
+    },
+    "Operating_System_Lab_Linux_Notes": {
+      "commits": 57,
+      "additions": 4429,
+      "deletions": 1191,
+      "net_lines": 3238,
+      "code_churn": 5620,
+      "net_lines_per_commit": 56.81,
+      "additions_per_commit": 77.7,
+      "deletions_per_commit": 20.89,
+      "churn_per_commit": 98.6
+    },
+    "Python_Libraries_Syntax": {
+      "commits": 24,
+      "additions": 14407,
+      "deletions": 16,
+      "net_lines": 14391,
+      "code_churn": 14423,
+      "net_lines_per_commit": 599.62,
+      "additions_per_commit": 600.29,
+      "deletions_per_commit": 0.67,
+      "churn_per_commit": 600.96
+    },
+    "Python_Syntax": {
+      "commits": 108,
+      "additions": 2840,
+      "deletions": 127,
+      "net_lines": 2713,
+      "code_churn": 2967,
+      "net_lines_per_commit": 25.12,
+      "additions_per_commit": 26.3,
+      "deletions_per_commit": 1.18,
+      "churn_per_commit": 27.47
+    },
+    "Quantum_Computing_Algorithms": {
+      "commits": 91,
+      "additions": 4740,
+      "deletions": 16,
+      "net_lines": 4724,
+      "code_churn": 4756,
+      "net_lines_per_commit": 51.91,
+      "additions_per_commit": 52.09,
+      "deletions_per_commit": 0.18,
+      "churn_per_commit": 52.26
+    },
+    "shaaravraghu": {
+      "commits": 186,
+      "additions": 3627,
+      "deletions": 2159,
+      "net_lines": 1468,
+      "code_churn": 5786,
+      "net_lines_per_commit": 7.89,
+      "additions_per_commit": 19.5,
+      "deletions_per_commit": 11.61,
+      "churn_per_commit": 31.11
+    },
+    "SynnccIT": {
+      "commits": 10,
+      "additions": 25337,
+      "deletions": 126,
+      "net_lines": 25211,
+      "code_churn": 25463,
+      "net_lines_per_commit": 2521.1,
+      "additions_per_commit": 2533.7,
+      "deletions_per_commit": 12.6,
+      "churn_per_commit": 2546.3
+    },
+    "Veda-AI_NSRCEL-IIMB": {
+      "commits": 2,
+      "additions": 1721,
+      "deletions": 199,
+      "net_lines": 1522,
+      "code_churn": 1920,
+      "net_lines_per_commit": 761.0,
+      "additions_per_commit": 860.5,
+      "deletions_per_commit": 99.5,
+      "churn_per_commit": 960.0
+    },
+    "Workday-Issues": {
+      "commits": 229,
+      "additions": 6994,
+      "deletions": 946,
+      "net_lines": 6048,
+      "code_churn": 7940,
+      "net_lines_per_commit": 26.41,
+      "additions_per_commit": 30.54,
+      "deletions_per_commit": 4.13,
+      "churn_per_commit": 34.67
+    }
+  },
+  "top_3_commits_per_week": {
+    "period_days": 90,
+    "metric": "chronological_commits",
+    "top_3_commits_per_week": {
+      "2026-W22": [
+        {
+          "sha": "bedb899119fca670885589d6a30d3d011191dc87",
+          "repository": "GitHub_Guide",
+          "timestamp": "2026-05-26T11:23:45+05:30",
+          "message": "Revise AI Prompt Template for PR review process",
+          "url": "https://github.com/shaaravraghu/GitHub_Guide/commit/bedb899119fca670885589d6a30d3d011191dc87"
+        },
+        {
+          "sha": "c9457f99c84c87fe1c63d95f158fb8b92d782d45",
+          "repository": "GitHub_Guide",
+          "timestamp": "2026-05-26T11:26:31+05:30",
+          "message": "Update PR review methodology documentation",
+          "url": "https://github.com/shaaravraghu/GitHub_Guide/commit/c9457f99c84c87fe1c63d95f158fb8b92d782d45"
+        },
+        {
+          "sha": "79c9944b3f1992a7e4fef7d509934dc05b480d1b",
+          "repository": "Veda-AI_NSRCEL-IIMB",
+          "timestamp": "2026-05-28T01:13:23+05:30",
+          "message": "Phase 2 implemented",
+          "url": "https://github.com/shaaravraghu/Veda-AI_NSRCEL-IIMB/commit/79c9944b3f1992a7e4fef7d509934dc05b480d1b"
+        }
+      ],
+      "2026-W23": [
+        {
+          "sha": "d9af4f22cf1d62333668c0e2154f4a4ba8316f90",
+          "repository": "GitHub_Guide",
+          "timestamp": "2026-06-01T13:36:57+05:30",
+          "message": "Add co-author information to PR_Co-authors",
+          "url": "https://github.com/shaaravraghu/GitHub_Guide/commit/d9af4f22cf1d62333668c0e2154f4a4ba8316f90"
+        },
+        {
+          "sha": "7ae6a9caec0b14bced318af762fe5ce00b4dacaa",
+          "repository": "Weekly_Tasks_Nihar",
+          "timestamp": "2026-06-01T15:05:28+05:30",
+          "message": "Update AWS.md",
+          "url": "https://github.com/shaaravraghu/Weekly_Tasks_Nihar/commit/7ae6a9caec0b14bced318af762fe5ce00b4dacaa"
+        },
+        {
+          "sha": "2dec2f14d52ff05515c25bfee86c92048fba66c7",
+          "repository": "Weekly_Tasks_Nihar",
+          "timestamp": "2026-06-01T15:06:04+05:30",
+          "message": "Update Django.md",
+          "url": "https://github.com/shaaravraghu/Weekly_Tasks_Nihar/commit/2dec2f14d52ff05515c25bfee86c92048fba66c7"
+        }
+      ],
+      "2026-W25": [
+        {
+          "sha": "a90b121bd2d6998dc76dc72abf2d2263b723790c",
+          "repository": "Dvi",
+          "timestamp": "2026-06-17T17:53:36+05:30",
+          "message": "Initial commit",
+          "url": "https://github.com/shaaravraghu/Dvi/commit/a90b121bd2d6998dc76dc72abf2d2263b723790c"
+        },
+        {
+          "sha": "4e64cc7e7330a6b14239d9ffbdefb9f30b18767c",
+          "repository": "Dvi",
+          "timestamp": "2026-06-17T17:55:19+05:30",
+          "message": "Create Novel.tex",
+          "url": "https://github.com/shaaravraghu/Dvi/commit/4e64cc7e7330a6b14239d9ffbdefb9f30b18767c"
+        },
+        {
+          "sha": "d1db7b2e251585d2be3af219d898a3dfe5fcacd7",
+          "repository": "Dvi",
+          "timestamp": "2026-06-18T00:17:05+05:30",
+          "message": "Update Novel.tex",
+          "url": "https://github.com/shaaravraghu/Dvi/commit/d1db7b2e251585d2be3af219d898a3dfe5fcacd7"
+        }
+      ],
+      "2026-W26": [
+        {
+          "sha": "7218ff6c356f7a5cfe38b143ba6e9ea3eff2957c",
+          "repository": "Dvi",
+          "timestamp": "2026-06-22T00:16:18+05:30",
+          "message": "Update Novel.tex",
+          "url": "https://github.com/shaaravraghu/Dvi/commit/7218ff6c356f7a5cfe38b143ba6e9ea3eff2957c"
+        },
+        {
+          "sha": "9b8cd6ee8d21d20f99245719d9a36f2f3bc7b2b8",
+          "repository": "Dvi",
+          "timestamp": "2026-06-24T00:33:01+05:30",
+          "message": "Update Novel.tex",
+          "url": "https://github.com/shaaravraghu/Dvi/commit/9b8cd6ee8d21d20f99245719d9a36f2f3bc7b2b8"
+        },
+        {
+          "sha": "96806b6503cb91d90fb46da7003ae007ed810e41",
+          "repository": "shaaravraghu",
+          "timestamp": "2026-06-24T22:25:45+05:30",
+          "message": "Initial commit",
+          "url": "https://github.com/shaaravraghu/shaaravraghu/commit/96806b6503cb91d90fb46da7003ae007ed810e41"
+        }
+      ],
+      "2026-W27": [
+        {
+          "sha": "5681d9cdbdd69fc7296dc9a00a65f4fb9dfcb244",
+          "repository": "shaaravraghu",
+          "timestamp": "2026-06-29T13:49:23+05:30",
+          "message": "Update README.md",
+          "url": "https://github.com/shaaravraghu/shaaravraghu/commit/5681d9cdbdd69fc7296dc9a00a65f4fb9dfcb244"
+        },
+        {
+          "sha": "97f9dd402bed50b3f6155dce956b57020eb9adb6",
+          "repository": "shaaravraghu",
+          "timestamp": "2026-06-29T13:52:36+05:30",
+          "message": "Add visitor count badge to README",
+          "url": "https://github.com/shaaravraghu/shaaravraghu/commit/97f9dd402bed50b3f6155dce956b57020eb9adb6"
+        },
+        {
+          "sha": "aea4777f7ce0cc03fa74ade6ea0a80e39276666a",
+          "repository": "shaaravraghu",
+          "timestamp": "2026-06-29T13:53:10+05:30",
+          "message": "Update visitor count image link in README.md",
+          "url": "https://github.com/shaaravraghu/shaaravraghu/commit/aea4777f7ce0cc03fa74ade6ea0a80e39276666a"
+        }
+      ],
+      "2026-W28": [
+        {
+          "sha": "73c241b53ae85654f2dc836539607f5c526c2474",
+          "repository": "Dvi",
+          "timestamp": "2026-07-06T22:02:23+05:30",
+          "message": "Update Novel.tex",
+          "url": "https://github.com/shaaravraghu/Dvi/commit/73c241b53ae85654f2dc836539607f5c526c2474"
+        },
+        {
+          "sha": "9129dd3636ca10c072a0a077a699c267d4aee0a6",
+          "repository": "Dvi",
+          "timestamp": "2026-07-07T20:24:58+05:30",
+          "message": "Update Novel.tex",
+          "url": "https://github.com/shaaravraghu/Dvi/commit/9129dd3636ca10c072a0a077a699c267d4aee0a6"
+        },
+        {
+          "sha": "f95542742f161bbf69bc1739737ec42d752940c0",
+          "repository": "Dvi",
+          "timestamp": "2026-07-08T13:18:57+05:30",
+          "message": "Update Novel.tex",
+          "url": "https://github.com/shaaravraghu/Dvi/commit/f95542742f161bbf69bc1739737ec42d752940c0"
+        }
+      ],
+      "2026-W29": [
+        {
+          "sha": "92e6f8189ab970c6575010a9cd69e671c766c6a6",
+          "repository": "Notepad",
+          "timestamp": "2026-07-13T20:03:07+05:30",
+          "message": "Add resume requirements and sections",
+          "url": "https://github.com/shaaravraghu/Notepad/commit/92e6f8189ab970c6575010a9cd69e671c766c6a6"
+        },
+        {
+          "sha": "aef0d78b501d46eb1e72f5050224c648bba8981b",
+          "repository": "Notepad",
+          "timestamp": "2026-07-14T22:57:41+05:30",
+          "message": "Update Resume_Requirements.txt",
+          "url": "https://github.com/shaaravraghu/Notepad/commit/aef0d78b501d46eb1e72f5050224c648bba8981b"
+        },
+        {
+          "sha": "66f44b4723cf28561a01bee166a711b23593123f",
+          "repository": "Dvi",
+          "timestamp": "2026-07-15T19:57:11+05:30",
+          "message": "Update Novel.tex",
+          "url": "https://github.com/shaaravraghu/Dvi/commit/66f44b4723cf28561a01bee166a711b23593123f"
+        }
+      ],
+      "2026-W30": [
+        {
+          "sha": "c008a5ba1201a0a39cb81579f122a2f111100edb",
+          "repository": "shaaravraghu",
+          "timestamp": "2026-07-20T02:53:15+05:30",
+          "message": "Update README.md with GitHub stats images",
+          "url": "https://github.com/shaaravraghu/shaaravraghu/commit/c008a5ba1201a0a39cb81579f122a2f111100edb"
+        },
+        {
+          "sha": "8876a0d5d4b7c39a0f5d884e5e9bfcc47518bbaa",
+          "repository": "Dvi",
+          "timestamp": "2026-07-21T03:20:12+05:30",
+          "message": "Update font stack in Novel.tex per editorial brief",
+          "url": "https://github.com/shaaravraghu/Dvi/commit/8876a0d5d4b7c39a0f5d884e5e9bfcc47518bbaa"
+        },
+        {
+          "sha": "87b7258eb37d1e2d1c692d22e7905d93d414ebc9",
+          "repository": "Dvi",
+          "timestamp": "2026-07-22T15:15:53+05:30",
+          "message": "Expand README header with additional lines",
+          "url": "https://github.com/shaaravraghu/Dvi/commit/87b7258eb37d1e2d1c692d22e7905d93d414ebc9"
+        }
+      ],
+      "2026-W31": [
+        {
+          "sha": "bdd39f87f55ed8b65385e212f078366c16e9f51b",
+          "repository": "DSA",
+          "timestamp": "2026-07-27T11:54:11+05:30",
+          "message": "Create Hashing.cpp",
+          "url": "https://github.com/shaaravraghu/DSA/commit/bdd39f87f55ed8b65385e212f078366c16e9f51b"
+        },
+        {
+          "sha": "6e0232f2f60ab1f2abdc5cb75861bb7f585eb5c1",
+          "repository": "DSA",
+          "timestamp": "2026-07-27T12:04:12+05:30",
+          "message": "Update Hashing.cpp",
+          "url": "https://github.com/shaaravraghu/DSA/commit/6e0232f2f60ab1f2abdc5cb75861bb7f585eb5c1"
+        },
+        {
+          "sha": "27e1f0c430b136a88c2eb992af5377e90d381bc0",
+          "repository": "Applications",
+          "timestamp": "2026-07-27T15:58:52+05:30",
+          "message": "Initial commit",
+          "url": "https://github.com/shaaravraghu/Applications/commit/27e1f0c430b136a88c2eb992af5377e90d381bc0"
+        }
+      ]
+    }
+  },
+  "activity_burst_5min": {
+    "period_days": 90,
+    "bucket_minutes": 5,
+    "total_buckets": 25920,
+    "active_buckets": 150,
+    "max_commits_in_5min": 8,
+    "average_commits_per_active_bucket": 1.39,
+    "top_bursts": [
+      {
+        "timestamp": "2026-06-01T17:55:00+05:30",
+        "commits": 8
+      },
+      {
+        "timestamp": "2026-06-02T22:50:00+05:30",
+        "commits": 6
+      },
+      {
+        "timestamp": "2026-07-22T22:35:00+05:30",
+        "commits": 6
+      },
+      {
+        "timestamp": "2026-06-01T15:05:00+05:30",
+        "commits": 5
+      },
+      {
+        "timestamp": "2026-06-03T14:05:00+05:30",
+        "commits": 5
+      },
+      {
+        "timestamp": "2026-06-02T13:50:00+05:30",
+        "commits": 4
+      },
+      {
+        "timestamp": "2026-06-02T11:15:00+05:30",
+        "commits": 3
+      },
+      {
+        "timestamp": "2026-06-24T22:25:00+05:30",
+        "commits": 3
+      },
+      {
+        "timestamp": "2026-06-24T22:30:00+05:30",
+        "commits": 3
+      },
+      {
+        "timestamp": "2026-06-29T13:50:00+05:30",
+        "commits": 3
+      }
+    ]
   }
 }
