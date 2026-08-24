@@ -901,26 +901,26 @@ if Path(GITHUB_STATS_PATH).exists():
             return " "
 
         if not maximum:
-            return "."
+            return "1"
 
         ratio = (
             value / maximum
         )
 
         if ratio <= 0.20:
-            return "."
+            return "1"
 
         elif ratio <= 0.40:
-            return ":"
+            return "2"
 
         elif ratio <= 0.60:
-            return "+"
+            return "3"
 
         elif ratio <= 0.80:
-            return "#"
+            return "4"
 
         else:
-            return "@"
+            return "5"
 
     # ==============================================================
     # SCREEN 1
