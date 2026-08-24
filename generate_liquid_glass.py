@@ -1354,6 +1354,62 @@ if Path(GITHUB_STATS_PATH).exists():
         0,
     )
 
+    # ==============================================================
+    # Build acceleration display values first
+    # ==============================================================
+
+    _a30_bar = _percentage_bar(
+        min(
+            (_a30 / max(_a365, 1)) * 100,
+            100,
+        ),
+        18,
+    )
+
+    _a60_bar = _percentage_bar(
+        min(
+            (_a60 / max(_a365, 1)) * 100,
+            100,
+        ),
+        18,
+    )
+
+    _a90_bar = _percentage_bar(
+        min(
+            (_a90 / max(_a365, 1)) * 100,
+            100,
+        ),
+        18,
+    )
+
+    _a180_bar = _percentage_bar(
+        min(
+            (_a180 / max(_a365, 1)) * 100,
+            100,
+        ),
+        18,
+    )
+
+    _a365_bar = _percentage_bar(
+        100 if _a365 else 0,
+        18,
+    )
+
+    _ratio_30_90 = _acceleration.get(
+        "30_vs_90_ratio",
+        0,
+    )
+
+    _ratio_90_180 = _acceleration.get(
+        "90_vs_180_ratio",
+        0,
+    )
+
+    _ratio_90_365 = _acceleration.get(
+        "90_vs_365_ratio",
+        0,
+    )
+
     acceleration_lines = [
         "",
         "ACTIVITY ACCELERATION",
@@ -1361,70 +1417,54 @@ if Path(GITHUB_STATS_PATH).exists():
         "",
         "average daily contributions:",
         "",
-        (
-            f"  30d   "
-            f"{_a30:>7.2f}   "
-            f"{_percentage_bar("
-            "min((_a30 / max(_a365, 1)) * 100, 100),"
-            "18"
-            ")}"
-        ),
-        (
-            f"  60d   "
-            f"{_a60:>7.2f}   "
-            f"{_percentage_bar("
-            "min((_a60 / max(_a365, 1)) * 100, 100),"
-            "18"
-            ")}"
-        ),
-        (
-            f"  90d   "
-            f"{_a90:>7.2f}   "
-            f"{_percentage_bar("
-            "min((_a90 / max(_a365, 1)) * 100, 100),"
-            "18"
-            ")}"
-        ),
-        (
-            f"  180d  "
-            f"{_a180:>7.2f}   "
-            f"{_percentage_bar("
-            "min((_a180 / max(_a365, 1)) * 100, 100),"
-            "18"
-            ")}"
-        ),
-        (
-            f"  365d  "
-            f"{_a365:>7.2f}   "
-            f"{_percentage_bar("
-            "100 if _a365 else 0,"
-            "18"
-            ")}"
-        ),
+        f"  30d   {_a30:>7.2f}   {_a30_bar}",
+        f"  60d   {_a60:>7.2f}   {_a60_bar}",
+        f"  90d   {_a90:>7.2f}   {_a90_bar}",
+        f"  180d  {_a180:>7.2f}   {_a180_bar}",
+        f"  365d  {_a365:>7.2f}   {_a365_bar}",
         "",
         "ACCELERATION RATIOS",
         "------------------------------",
-        (
-            f"30d / 90d .......... "
-            f"{_acceleration.get("
-            "'30_vs_90_ratio', 0"
-            ")}x"
-        ),
-        (
-            f"90d / 180d ......... "
-            f"{_acceleration.get("
-            "'90_vs_180_ratio', 0"
-            ")}x"
-        ),
-        (
-            f"90d / 365d ......... "
-            f"{_acceleration.get("
-            "'90_vs_365_ratio', 0"
-            ")}x"
-        ),
+        f"30d / 90d .......... {_ratio_30_90}x",
+        f"90d / 180d ......... {_ratio_90_180}x",
+        f"90d / 365d ......... {_ratio_90_365}x",
         "",
         "trend = recent activity / historical activity",
     ]
+
+    for i, line in enumerate(
+        acceleration_lines,
+        start=1,
+    ):
+
+        t.gen_text(
+            line,
+            row_num=i,
+        )
+
+        if line:
+            t.clone_frame(1)
+
+    t.clone_frame(40)
+
+    # ==============================================================
+    # CLEAR -> continue normal terminal sequence
+    # ==============================================================
+
+    t.gen_prompt(
+        row_num=22,
+    )
+
+    t.gen_typing_text(
+        "clear",
+        row_num=22,
+        contin=True,
+        speed=1,
+    )
+
+    t.clone_frame(5)
+
+    t.clear_frame()
 
     for i, line in enumerate(
         acceleration_lines,
