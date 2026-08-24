@@ -229,18 +229,23 @@ def fetch_contribution_calendar():
 
     return {
         "total_contributions": total,
+
         "avg_per_day": round(
             avg_per_day,
             2,
         ),
+
         "avg_per_week": round(
             avg_per_week,
             2,
         ),
+
         "total_per_weekday": dict(
             by_weekday
         ),
+
         "avg_per_weekday": avg_by_weekday,
+
         "weeks_covered": num_weeks,
 
         # Used internally for streak / acceleration.
@@ -338,7 +343,6 @@ def calculate_streak_metrics(
 
         previous_date = date
 
-    # Current streak works backwards from today.
     current_streak = 0
 
     for offset in range(period_days):
@@ -398,9 +402,6 @@ def calculate_activity_acceleration(
         90 days
         180 days
         365 days
-
-    Also calculates ratios comparing recent activity
-    against longer-term activity.
     """
 
     today = datetime.now(
@@ -471,22 +472,13 @@ def calculate_activity_acceleration(
 
 # ----------------------------------------------------------------------
 # 4. Recent Commit Dataset
-#
-# This one dataset powers:
-#
-#   - hourly activity
-#   - activity heatmap
-#   - repository concentration
-#   - weekly top commits
-#   - 5-minute activity bursts
 # ----------------------------------------------------------------------
 
 def fetch_recent_commits():
     """
     Fetch publicly searchable commits from the last 90 days.
 
-    GitHub Search is divided into seven-day windows to avoid
-    overly large search result sets.
+    GitHub Search is divided into seven-day windows.
 
     Commit timestamps are converted to IST.
     """
@@ -589,6 +581,14 @@ def fetch_recent_commits():
                 except ValueError:
                     continue
 
+                # Enforce the exact 90-day boundary.
+                if not (
+                    start
+                    <= dt
+                    <= now
+                ):
+                    continue
+
                 local_dt = dt.astimezone(
                     LOCAL_TIMEZONE
                 )
@@ -605,23 +605,33 @@ def fetch_recent_commits():
 
                 commits.append({
                     "sha": item.get("sha"),
+
                     "repository": repository,
+
                     "timestamp_utc": timestamp,
+
                     "timestamp_ist": (
                         local_dt.isoformat()
                     ),
+
                     "datetime": local_dt,
+
                     "date": (
                         local_dt.date().isoformat()
                     ),
+
                     "weekday": (
                         WEEKDAY_NAMES[
                             local_dt.weekday()
                         ]
                     ),
+
                     "hour": local_dt.hour,
+
                     "minute": local_dt.minute,
+
                     "message": message,
+
                     "url": item.get(
                         "html_url"
                     ),
@@ -632,7 +642,6 @@ def fetch_recent_commits():
 
             page += 1
 
-            # Small delay to be polite to GitHub.
             time.sleep(0.2)
 
         window_start = window_end
@@ -652,18 +661,47 @@ def fetch_recent_commits():
     )
 
     commits.sort(
-        key=lambda x: x["datetime"]
+        key=lambda x:
+        x["datetime"]
     )
 
     return {
         "commits": commits,
-        "commits_sampled": len(commits),
+
+        "commits_sampled": len(
+            commits
+        ),
+
         "search_requests": search_requests,
+
         "period_days": ACTIVITY_DAYS,
+
+        "period_start_utc": (
+            start.isoformat()
+        ),
+
+        "period_end_utc": (
+            now.isoformat()
+        ),
+
+        "period_start_ist": (
+            start.astimezone(
+                LOCAL_TIMEZONE
+            ).isoformat()
+        ),
+
+        "period_end_ist": (
+            now.astimezone(
+                LOCAL_TIMEZONE
+            ).isoformat()
+        ),
+
         "timezone": "Asia/Kolkata",
+
         "timezone_label": (
             "IST (UTC+05:30)"
         ),
+
         "source": (
             "GitHub Commit Search API"
         ),
@@ -676,11 +714,22 @@ def fetch_recent_commits():
 
 def calculate_hourly_activity(commits):
     """
-    Calculate total commits for each hour of the day.
+    Calculate total commits and percentage of commits
+    for each hour of the day.
+
+    Percentages represent the share of all sampled commits
+    that occurred during each hour.
+
+    Example:
+
+        22:00 = 49 commits
+        Total = 209 commits
+
+        49 / 209 * 100 = 23.44%
     """
 
-    hourly = {
-        str(hour): 0
+    hourly_counts = {
+        f"{hour:02d}": 0
         for hour in range(24)
     }
 
@@ -688,54 +737,110 @@ def calculate_hourly_activity(commits):
 
         hour = commit["hour"]
 
-        hourly[str(hour)] += 1
+        hourly_counts[
+            f"{hour:02d}"
+        ] += 1
 
-    if commits:
+    total_commits = sum(
+        hourly_counts.values()
+    )
+
+    hourly_percentages = {
+        hour: round(
+            count / total_commits * 100,
+            2,
+        )
+        if total_commits
+        else 0
+        for hour, count
+        in hourly_counts.items()
+    }
+
+    if total_commits:
 
         peak_hour = max(
-            range(24),
-            key=lambda hour:
-            hourly[str(hour)],
+            hourly_counts,
+            key=hourly_counts.get,
         )
 
-        peak_count = hourly[
-            str(peak_hour)
+        peak_count = hourly_counts[
+            peak_hour
         ]
+
+        peak_percentage = (
+            hourly_percentages[
+                peak_hour
+            ]
+        )
 
     else:
 
-        peak_hour = 0
+        peak_hour = "00"
         peak_count = 0
+        peak_percentage = 0
 
-    if 5 <= peak_hour < 12:
+    peak_hour_int = int(
+        peak_hour
+    )
+
+    if 5 <= peak_hour_int < 12:
         period = "Morning"
 
-    elif 12 <= peak_hour < 17:
+    elif 12 <= peak_hour_int < 17:
         period = "Afternoon"
 
-    elif 17 <= peak_hour < 21:
+    elif 17 <= peak_hour_int < 21:
         period = "Evening"
 
     else:
         period = "Night"
 
     return {
-        "hourly_commit_counts": hourly,
+        "hourly_commit_counts": (
+            hourly_counts
+        ),
+
+        "hourly_commit_percentages": (
+            hourly_percentages
+        ),
+
+        "hourly_total_commits": (
+            total_commits
+        ),
+
         "hourly_timezone": "Asia/Kolkata",
+
         "hourly_timezone_label": (
             "IST (UTC+05:30)"
         ),
-        "hourly_period_days": ACTIVITY_DAYS,
+
+        "hourly_period_days": (
+            ACTIVITY_DAYS
+        ),
+
         "hourly_source": (
             "GitHub Commit Search API"
         ),
-        "commits_sampled": len(commits),
-        "peak_hour": peak_hour,
-        "peak_hour_label": (
-            f"{peak_hour:02d}:00–"
-            f"{peak_hour:02d}:59 IST"
+
+        "commits_sampled": (
+            total_commits
         ),
-        "peak_hour_commit_count": peak_count,
+
+        "peak_hour": peak_hour_int,
+
+        "peak_hour_label": (
+            f"{peak_hour_int:02d}:00–"
+            f"{peak_hour_int:02d}:59 IST"
+        ),
+
+        "peak_hour_commit_count": (
+            peak_count
+        ),
+
+        "peak_hour_percentage": (
+            peak_percentage
+        ),
+
         "most_active_period": period,
     }
 
@@ -747,9 +852,17 @@ def calculate_hourly_activity(commits):
 def build_activity_heatmap(commits):
     """
     Build a weekday × hour commit activity matrix.
+
+    Both raw counts and percentages are returned.
+
+    matrix_counts:
+        Number of commits in each weekday/hour bucket.
+
+    matrix_percentages:
+        Percentage of all commits represented by each bucket.
     """
 
-    heatmap = {
+    heatmap_counts = {
         day: {
             f"{hour:02d}": 0
             for hour in range(24)
@@ -763,18 +876,55 @@ def build_activity_heatmap(commits):
 
         hour = f"{commit['hour']:02d}"
 
-        heatmap[day][hour] += 1
+        heatmap_counts[
+            day
+        ][hour] += 1
+
+    total_commits = sum(
+        sum(day.values())
+        for day in heatmap_counts.values()
+    )
+
+    heatmap_percentages = {
+        day: {
+            hour: round(
+                count / total_commits * 100,
+                2,
+            )
+            if total_commits
+            else 0
+            for hour, count
+            in hours.items()
+        }
+        for day, hours
+        in heatmap_counts.items()
+    }
 
     return {
         "timezone": "Asia/Kolkata",
+
         "period_days": ACTIVITY_DAYS,
+
         "metric": "commits",
+
+        "total_commits": (
+            total_commits
+        ),
+
         "days": WEEKDAY_NAMES,
+
         "hours": [
             f"{hour:02d}"
             for hour in range(24)
         ],
-        "matrix": heatmap,
+
+        "matrix_counts": (
+            heatmap_counts
+        ),
+
+        "matrix_percentages": (
+            heatmap_percentages
+        ),
     }
 
 
@@ -819,11 +969,17 @@ def calculate_repository_concentration(
             "metric": (
                 "Herfindahl-Hirschman Index"
             ),
+
             "basis": "commits",
+
             "period_days": ACTIVITY_DAYS,
+
             "hhi": 0,
+
             "effective_repositories": 0,
+
             "repository_shares": {},
+
             "repository_commits": {},
         }
 
@@ -848,16 +1004,21 @@ def calculate_repository_concentration(
         "metric": (
             "Herfindahl-Hirschman Index"
         ),
+
         "basis": "commits",
+
         "period_days": ACTIVITY_DAYS,
+
         "hhi": round(
             hhi,
             4,
         ),
+
         "effective_repositories": round(
             effective_repositories,
             2,
         ),
+
         "repository_shares": {
             repo: round(
                 share,
@@ -869,6 +1030,7 @@ def calculate_repository_concentration(
                 reverse=True,
             )
         },
+
         "repository_commits": dict(
             sorted(
                 repo_counts.items(),
@@ -894,12 +1056,15 @@ def fetch_repos():
         resp = requests.get(
             f"{REST_URL}/users/"
             f"{GITHUB_USERNAME}/repos",
+
             headers=_headers(),
+
             params={
                 "per_page": 100,
                 "page": page,
                 "type": "owner",
             },
+
             timeout=30,
         )
 
@@ -960,8 +1125,6 @@ def fetch_lines_of_code(repos):
                 timeout=30,
             )
 
-            # GitHub may still be calculating
-            # repository statistics.
             if resp.status_code == 202:
 
                 time.sleep(2)
@@ -1035,12 +1198,16 @@ def fetch_lines_of_code(repos):
 
     return {
         "total_additions": total_additions,
+
         "total_deletions": total_deletions,
+
         "total_commits": total_commits,
+
         "net_lines": (
             total_additions
             - total_deletions
         ),
+
         "per_repo": per_repo,
     }
 
@@ -1066,19 +1233,25 @@ def calculate_code_churn(loc):
 
     return {
         "scope": "repository_history",
+
         "additions": additions,
+
         "deletions": deletions,
+
         "total_churn": total_churn,
+
         "net_lines": (
             additions
             - deletions
         ),
+
         "deletion_ratio": round(
             deletions / additions,
             4,
         )
         if additions
         else 0,
+
         "deletion_percentage_of_churn": round(
             deletions
             / total_churn
@@ -1138,9 +1311,13 @@ def calculate_repo_efficiency(
 
         result[repo] = {
             "commits": commits,
+
             "additions": additions,
+
             "deletions": deletions,
+
             "net_lines": net_lines,
+
             "code_churn": churn,
 
             "net_lines_per_commit": round(
@@ -1187,10 +1364,6 @@ def calculate_top_commits_per_week(
 
     Current ranking:
         chronological
-
-    This intentionally does not claim to be the largest
-    commit by code churn because the Search API result does
-    not contain commit-level additions/deletions.
     """
 
     weekly = defaultdict(list)
@@ -1228,15 +1401,19 @@ def calculate_top_commits_per_week(
         result[week] = [
             {
                 "sha": commit["sha"],
+
                 "repository": (
                     commit["repository"]
                 ),
+
                 "timestamp": (
                     commit["timestamp_ist"]
                 ),
+
                 "message": (
                     commit["message"]
                 ),
+
                 "url": commit["url"],
             }
             for commit
@@ -1245,9 +1422,11 @@ def calculate_top_commits_per_week(
 
     return {
         "period_days": ACTIVITY_DAYS,
+
         "metric": (
             "chronological_commits"
         ),
+
         "top_3_commits_per_week": result,
     }
 
@@ -1261,16 +1440,6 @@ def calculate_activity_bursts(
 ):
     """
     Group commits into five-minute time buckets.
-
-    Example:
-
-        22:10:00
-        22:11:32
-        22:14:51
-
-    all belong to:
-
-        22:10:00–22:14:59
     """
 
     buckets = defaultdict(int)
@@ -1297,11 +1466,17 @@ def calculate_activity_bursts(
 
         return {
             "period_days": ACTIVITY_DAYS,
+
             "bucket_minutes": 5,
+
             "total_buckets": 0,
+
             "active_buckets": 0,
+
             "max_commits_in_5min": 0,
+
             "average_commits_per_active_bucket": 0,
+
             "top_bursts": [],
         }
 
@@ -1317,31 +1492,39 @@ def calculate_activity_bursts(
 
     return {
         "period_days": ACTIVITY_DAYS,
+
         "bucket_minutes": 5,
+
         "total_buckets": int(
             ACTIVITY_DAYS
             * 24
             * 60
             / 5
         ),
+
         "active_buckets": len(
             buckets
         ),
+
         "max_commits_in_5min": max(
             active_counts
         ),
+
         "average_commits_per_active_bucket": round(
             sum(active_counts)
             / len(active_counts),
             2,
         ),
+
         "top_bursts": [
             {
                 "timestamp": (
                     bucket.isoformat()
                 ),
+
                 "commits": count,
             }
+
             for bucket, count
             in top_bursts
         ],
@@ -1542,7 +1725,6 @@ def main():
 
     # --------------------------------------------------------------
     # Remove internal daily contribution data
-    # from the final JSON.
     # --------------------------------------------------------------
 
     contrib.pop(
@@ -1563,27 +1745,11 @@ def main():
             ).isoformat()
         ),
 
-        # ----------------------------------------------------------
-        # Existing contribution statistics
-        # ----------------------------------------------------------
-
         **contrib,
-
-        # ----------------------------------------------------------
-        # Hourly activity
-        # ----------------------------------------------------------
 
         **hourly,
 
-        # ----------------------------------------------------------
-        # Lines of code
-        # ----------------------------------------------------------
-
         **loc,
-
-        # ----------------------------------------------------------
-        # New analytics
-        # ----------------------------------------------------------
 
         "activity_heatmap": heatmap,
 
@@ -1696,6 +1862,21 @@ def main():
     print(
         f"  max 5-min burst      : "
         f"{bursts['max_commits_in_5min']}"
+    )
+
+    print(
+        f"  peak hour            : "
+        f"{hourly['peak_hour_label']}"
+    )
+
+    print(
+        f"  peak hour commits    : "
+        f"{hourly['peak_hour_commit_count']}"
+    )
+
+    print(
+        f"  peak hour percentage : "
+        f"{hourly['peak_hour_percentage']}%"
     )
 
 
