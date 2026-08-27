@@ -1,95 +1,95 @@
 {
   "username": "shaaravraghu",
-  "generated_at": "2026-08-24T13:41:01.958063+00:00",
-  "total_contributions": 2516,
-  "avg_per_day": 6.87,
-  "avg_per_week": 47.47,
+  "generated_at": "2026-08-27T10:44:03.725227+00:00",
+  "total_contributions": 2568,
+  "avg_per_day": 6.96,
+  "avg_per_week": 48.45,
   "total_per_weekday": {
     "Sun": 461,
-    "Mon": 384,
-    "Tue": 405,
-    "Wed": 467,
-    "Thu": 314,
+    "Mon": 386,
+    "Tue": 444,
+    "Wed": 470,
+    "Thu": 322,
     "Fri": 203,
     "Sat": 282
   },
   "avg_per_weekday": {
-    "Mon": 7.25,
-    "Tue": 7.64,
-    "Wed": 8.81,
-    "Thu": 5.92,
+    "Mon": 7.28,
+    "Tue": 8.38,
+    "Wed": 8.87,
+    "Thu": 6.08,
     "Fri": 3.83,
     "Sat": 5.32,
     "Sun": 8.7
   },
   "weeks_covered": 53,
   "hourly_commit_counts": {
-    "00": 9,
-    "01": 3,
-    "02": 0,
-    "03": 0,
+    "00": 12,
+    "01": 2,
+    "02": 1,
+    "03": 1,
     "04": 0,
     "05": 0,
     "06": 0,
     "07": 0,
     "08": 0,
     "09": 0,
-    "10": 1,
-    "11": 8,
-    "12": 3,
-    "13": 17,
-    "14": 12,
-    "15": 11,
+    "10": 12,
+    "11": 6,
+    "12": 2,
+    "13": 24,
+    "14": 10,
+    "15": 14,
     "16": 0,
     "17": 10,
     "18": 4,
-    "19": 5,
+    "19": 7,
     "20": 7,
-    "21": 4,
-    "22": 27,
-    "23": 12
+    "21": 9,
+    "22": 49,
+    "23": 14
   },
   "hourly_commit_percentages": {
-    "00": 6.77,
-    "01": 2.26,
-    "02": 0.0,
-    "03": 0.0,
+    "00": 6.52,
+    "01": 1.09,
+    "02": 0.54,
+    "03": 0.54,
     "04": 0.0,
     "05": 0.0,
     "06": 0.0,
     "07": 0.0,
     "08": 0.0,
     "09": 0.0,
-    "10": 0.75,
-    "11": 6.02,
-    "12": 2.26,
-    "13": 12.78,
-    "14": 9.02,
-    "15": 8.27,
+    "10": 6.52,
+    "11": 3.26,
+    "12": 1.09,
+    "13": 13.04,
+    "14": 5.43,
+    "15": 7.61,
     "16": 0.0,
-    "17": 7.52,
-    "18": 3.01,
-    "19": 3.76,
-    "20": 5.26,
-    "21": 3.01,
-    "22": 20.3,
-    "23": 9.02
+    "17": 5.43,
+    "18": 2.17,
+    "19": 3.8,
+    "20": 3.8,
+    "21": 4.89,
+    "22": 26.63,
+    "23": 7.61
   },
-  "hourly_total_commits": 133,
+  "hourly_total_commits": 184,
   "hourly_timezone": "Asia/Kolkata",
   "hourly_timezone_label": "IST (UTC+05:30)",
   "hourly_period_days": 90,
   "hourly_source": "GitHub Commit Search API",
-  "commits_sampled": 133,
+  "commits_sampled": 184,
   "peak_hour": 22,
   "peak_hour_label": "22:00\u201322:59 IST",
-  "peak_hour_commit_count": 27,
-  "peak_hour_percentage": 20.3,
+  "peak_hour_commit_count": 49,
+  "peak_hour_percentage": 26.63,
   "most_active_period": "Night",
-  "total_additions": 4961330,
-  "total_deletions": 33942,
-  "total_commits": 1297,
-  "net_lines": 4927388,
+  "total_additions": 4961989,
+  "total_deletions": 34519,
+  "total_commits": 1307,
+  "net_lines": 4927470,
   "per_repo": {
     "Advanced_MERN_Syntax": {
       "additions": 43680,
@@ -132,9 +132,9 @@
       "commits": 18
     },
     "Computer_Networks_Lab": {
-      "additions": 1434,
-      "deletions": 257,
-      "commits": 37
+      "additions": 2092,
+      "deletions": 834,
+      "commits": 46
     },
     "Computer_Oriented_Statistics_Lab": {
       "additions": 6010,
@@ -216,6 +216,11 @@
       "deletions": 2159,
       "commits": 186
     },
+    "SIH_MathWorks_2026": {
+      "additions": 1,
+      "deletions": 0,
+      "commits": 1
+    },
     "SynnccIT": {
       "additions": 25337,
       "deletions": 126,
@@ -236,7 +241,7 @@
     "timezone": "Asia/Kolkata",
     "period_days": 90,
     "metric": "commits",
-    "total_commits": 133,
+    "total_commits": 184,
     "days": [
       "Mon",
       "Tue",
@@ -276,7 +281,7 @@
       "Mon": {
         "00": 1,
         "01": 0,
-        "02": 0,
+        "02": 1,
         "03": 0,
         "04": 0,
         "05": 0,
@@ -294,7 +299,7 @@
         "17": 8,
         "18": 0,
         "19": 0,
-        "20": 1,
+        "20": 2,
         "21": 0,
         "22": 1,
         "23": 0
@@ -303,7 +308,7 @@
         "00": 1,
         "01": 0,
         "02": 0,
-        "03": 0,
+        "03": 1,
         "04": 0,
         "05": 0,
         "06": 0,
@@ -322,7 +327,7 @@
         "19": 0,
         "20": 1,
         "21": 0,
-        "22": 11,
+        "22": 12,
         "23": 1
       },
       "Wed": {
@@ -339,21 +344,21 @@
         "10": 1,
         "11": 0,
         "12": 1,
-        "13": 4,
+        "13": 5,
         "14": 8,
-        "15": 0,
+        "15": 1,
         "16": 0,
         "17": 2,
         "18": 1,
-        "19": 0,
+        "19": 3,
         "20": 2,
-        "21": 2,
-        "22": 13,
+        "21": 5,
+        "22": 27,
         "23": 2
       },
       "Thu": {
         "00": 1,
-        "01": 1,
+        "01": 0,
         "02": 0,
         "03": 0,
         "04": 0,
@@ -362,23 +367,23 @@
         "07": 0,
         "08": 0,
         "09": 0,
-        "10": 0,
+        "10": 7,
         "11": 1,
-        "12": 2,
-        "13": 0,
-        "14": 2,
-        "15": 4,
+        "12": 1,
+        "13": 6,
+        "14": 0,
+        "15": 5,
         "16": 0,
         "17": 0,
         "18": 3,
-        "19": 5,
-        "20": 1,
-        "21": 1,
-        "22": 0,
-        "23": 5
+        "19": 4,
+        "20": 0,
+        "21": 3,
+        "22": 4,
+        "23": 7
       },
       "Fri": {
-        "00": 2,
+        "00": 5,
         "01": 2,
         "02": 0,
         "03": 0,
@@ -388,8 +393,8 @@
         "07": 0,
         "08": 0,
         "09": 0,
-        "10": 0,
-        "11": 4,
+        "10": 4,
+        "11": 2,
         "12": 0,
         "13": 0,
         "14": 0,
@@ -426,7 +431,7 @@
         "19": 0,
         "20": 2,
         "21": 1,
-        "22": 2,
+        "22": 4,
         "23": 2
       },
       "Sun": {
@@ -445,22 +450,22 @@
         "12": 0,
         "13": 0,
         "14": 0,
-        "15": 0,
+        "15": 1,
         "16": 0,
         "17": 0,
         "18": 0,
         "19": 0,
         "20": 0,
         "21": 0,
-        "22": 0,
+        "22": 1,
         "23": 0
       }
     },
     "matrix_percentages": {
       "Mon": {
-        "00": 0.75,
+        "00": 0.54,
         "01": 0.0,
-        "02": 0.0,
+        "02": 0.54,
         "03": 0.0,
         "04": 0.0,
         "05": 0.0,
@@ -471,23 +476,23 @@
         "10": 0.0,
         "11": 0.0,
         "12": 0.0,
-        "13": 5.26,
+        "13": 3.8,
         "14": 0.0,
-        "15": 3.76,
+        "15": 2.72,
         "16": 0.0,
-        "17": 6.02,
+        "17": 4.35,
         "18": 0.0,
         "19": 0.0,
-        "20": 0.75,
+        "20": 1.09,
         "21": 0.0,
-        "22": 0.75,
+        "22": 0.54,
         "23": 0.0
       },
       "Tue": {
-        "00": 0.75,
+        "00": 0.54,
         "01": 0.0,
         "02": 0.0,
-        "03": 0.0,
+        "03": 0.54,
         "04": 0.0,
         "05": 0.0,
         "06": 0.0,
@@ -495,22 +500,22 @@
         "08": 0.0,
         "09": 0.0,
         "10": 0.0,
-        "11": 2.26,
+        "11": 1.63,
         "12": 0.0,
-        "13": 4.51,
-        "14": 1.5,
-        "15": 1.5,
+        "13": 3.26,
+        "14": 1.09,
+        "15": 1.09,
         "16": 0.0,
         "17": 0.0,
         "18": 0.0,
         "19": 0.0,
-        "20": 0.75,
+        "20": 0.54,
         "21": 0.0,
-        "22": 8.27,
-        "23": 0.75
+        "22": 6.52,
+        "23": 0.54
       },
       "Wed": {
-        "00": 1.5,
+        "00": 1.09,
         "01": 0.0,
         "02": 0.0,
         "03": 0.0,
@@ -520,24 +525,24 @@
         "07": 0.0,
         "08": 0.0,
         "09": 0.0,
-        "10": 0.75,
+        "10": 0.54,
         "11": 0.0,
-        "12": 0.75,
-        "13": 3.01,
-        "14": 6.02,
-        "15": 0.0,
+        "12": 0.54,
+        "13": 2.72,
+        "14": 4.35,
+        "15": 0.54,
         "16": 0.0,
-        "17": 1.5,
-        "18": 0.75,
-        "19": 0.0,
-        "20": 1.5,
-        "21": 1.5,
-        "22": 9.77,
-        "23": 1.5
+        "17": 1.09,
+        "18": 0.54,
+        "19": 1.63,
+        "20": 1.09,
+        "21": 2.72,
+        "22": 14.67,
+        "23": 1.09
       },
       "Thu": {
-        "00": 0.75,
-        "01": 0.75,
+        "00": 0.54,
+        "01": 0.0,
         "02": 0.0,
         "03": 0.0,
         "04": 0.0,
@@ -546,24 +551,24 @@
         "07": 0.0,
         "08": 0.0,
         "09": 0.0,
-        "10": 0.0,
-        "11": 0.75,
-        "12": 1.5,
-        "13": 0.0,
-        "14": 1.5,
-        "15": 3.01,
+        "10": 3.8,
+        "11": 0.54,
+        "12": 0.54,
+        "13": 3.26,
+        "14": 0.0,
+        "15": 2.72,
         "16": 0.0,
         "17": 0.0,
-        "18": 2.26,
-        "19": 3.76,
-        "20": 0.75,
-        "21": 0.75,
-        "22": 0.0,
-        "23": 3.76
+        "18": 1.63,
+        "19": 2.17,
+        "20": 0.0,
+        "21": 1.63,
+        "22": 2.17,
+        "23": 3.8
       },
       "Fri": {
-        "00": 1.5,
-        "01": 1.5,
+        "00": 2.72,
+        "01": 1.09,
         "02": 0.0,
         "03": 0.0,
         "04": 0.0,
@@ -572,8 +577,8 @@
         "07": 0.0,
         "08": 0.0,
         "09": 0.0,
-        "10": 0.0,
-        "11": 3.01,
+        "10": 2.17,
+        "11": 1.09,
         "12": 0.0,
         "13": 0.0,
         "14": 0.0,
@@ -585,10 +590,10 @@
         "20": 0.0,
         "21": 0.0,
         "22": 0.0,
-        "23": 1.5
+        "23": 1.09
       },
       "Sat": {
-        "00": 0.75,
+        "00": 0.54,
         "01": 0.0,
         "02": 0.0,
         "03": 0.0,
@@ -608,13 +613,13 @@
         "17": 0.0,
         "18": 0.0,
         "19": 0.0,
-        "20": 1.5,
-        "21": 0.75,
-        "22": 1.5,
-        "23": 1.5
+        "20": 1.09,
+        "21": 0.54,
+        "22": 2.17,
+        "23": 1.09
       },
       "Sun": {
-        "00": 0.75,
+        "00": 0.54,
         "01": 0.0,
         "02": 0.0,
         "03": 0.0,
@@ -629,73 +634,75 @@
         "12": 0.0,
         "13": 0.0,
         "14": 0.0,
-        "15": 0.0,
+        "15": 0.54,
         "16": 0.0,
         "17": 0.0,
         "18": 0.0,
         "19": 0.0,
         "20": 0.0,
         "21": 0.0,
-        "22": 0.0,
+        "22": 0.54,
         "23": 0.0
       }
     }
   },
   "activity_streak": {
     "period_days": 90,
-    "active_days": 75,
-    "inactive_days": 15,
-    "longest_streak": 56,
-    "current_streak": 0,
-    "average_active_day_contributions": 20.07
+    "active_days": 77,
+    "inactive_days": 13,
+    "longest_streak": 60,
+    "current_streak": 60,
+    "average_active_day_contributions": 19.69
   },
   "activity_acceleration": {
-    "30_day_average": 39.8,
-    "60_day_average": 21.23,
-    "90_day_average": 16.72,
-    "180_day_average": 13.27,
-    "365_day_average": 6.89,
-    "30_vs_90_ratio": 2.38,
-    "90_vs_180_ratio": 1.26,
-    "90_vs_365_ratio": 2.427
+    "30_day_average": 41.13,
+    "60_day_average": 22.07,
+    "90_day_average": 16.84,
+    "180_day_average": 13.45,
+    "365_day_average": 7.04,
+    "30_vs_90_ratio": 2.442,
+    "90_vs_180_ratio": 1.252,
+    "90_vs_365_ratio": 2.392
   },
   "repository_concentration": {
     "metric": "Herfindahl-Hirschman Index",
     "basis": "commits",
     "period_days": 90,
-    "hhi": 0.1538,
-    "effective_repositories": 6.5,
+    "hhi": 0.1436,
+    "effective_repositories": 6.96,
     "repository_shares": {
-      "IICPC": 0.2105,
-      "GitHub_Guide": 0.1955,
-      "shaaravraghu": 0.1579,
-      "Weekly_Tasks_Nihar": 0.1353,
-      "may-tasks": 0.1128,
-      "Dvi": 0.1128,
-      "Veda-AI_NSRCEL-IIMB": 0.0451,
-      "GSSoC_2026": 0.0226,
-      "Weekly_Tasks_Sneha": 0.0075
+      "shaaravraghu": 0.25,
+      "IICPC": 0.1522,
+      "Dvi": 0.1413,
+      "GitHub_Guide": 0.125,
+      "Weekly_Tasks_Nihar": 0.0924,
+      "may-tasks": 0.0815,
+      "Notepad": 0.0598,
+      "DSA": 0.0435,
+      "Coding_Syntax": 0.038,
+      "GSSoC_2026": 0.0163
     },
     "repository_commits": {
+      "shaaravraghu": 46,
       "IICPC": 28,
-      "GitHub_Guide": 26,
-      "shaaravraghu": 21,
-      "Weekly_Tasks_Nihar": 18,
+      "Dvi": 26,
+      "GitHub_Guide": 23,
+      "Weekly_Tasks_Nihar": 17,
       "may-tasks": 15,
-      "Dvi": 15,
-      "Veda-AI_NSRCEL-IIMB": 6,
-      "GSSoC_2026": 3,
-      "Weekly_Tasks_Sneha": 1
+      "Notepad": 11,
+      "DSA": 8,
+      "Coding_Syntax": 7,
+      "GSSoC_2026": 3
     }
   },
   "code_churn": {
     "scope": "repository_history",
-    "additions": 4961330,
-    "deletions": 33942,
-    "total_churn": 4995272,
-    "net_lines": 4927388,
-    "deletion_ratio": 0.0068,
-    "deletion_percentage_of_churn": 0.68
+    "additions": 4961989,
+    "deletions": 34519,
+    "total_churn": 4996508,
+    "net_lines": 4927470,
+    "deletion_ratio": 0.007,
+    "deletion_percentage_of_churn": 0.69
   },
   "repository_efficiency": {
     "Advanced_MERN_Syntax": {
@@ -787,15 +794,15 @@
       "churn_per_commit": 157.22
     },
     "Computer_Networks_Lab": {
-      "commits": 37,
-      "additions": 1434,
-      "deletions": 257,
-      "net_lines": 1177,
-      "code_churn": 1691,
-      "net_lines_per_commit": 31.81,
-      "additions_per_commit": 38.76,
-      "deletions_per_commit": 6.95,
-      "churn_per_commit": 45.7
+      "commits": 46,
+      "additions": 2092,
+      "deletions": 834,
+      "net_lines": 1258,
+      "code_churn": 2926,
+      "net_lines_per_commit": 27.35,
+      "additions_per_commit": 45.48,
+      "deletions_per_commit": 18.13,
+      "churn_per_commit": 63.61
     },
     "Computer_Oriented_Statistics_Lab": {
       "commits": 66,
@@ -973,6 +980,17 @@
       "deletions_per_commit": 11.61,
       "churn_per_commit": 31.11
     },
+    "SIH_MathWorks_2026": {
+      "commits": 1,
+      "additions": 1,
+      "deletions": 0,
+      "net_lines": 1,
+      "code_churn": 1,
+      "net_lines_per_commit": 1.0,
+      "additions_per_commit": 1.0,
+      "deletions_per_commit": 0.0,
+      "churn_per_commit": 1.0
+    },
     "SynnccIT": {
       "commits": 10,
       "additions": 25337,
@@ -1013,25 +1031,18 @@
     "top_3_commits_per_week": {
       "2026-W22": [
         {
-          "sha": "79c9944b3f1992a7e4fef7d509934dc05b480d1b",
-          "repository": "Veda-AI_NSRCEL-IIMB",
-          "timestamp": "2026-05-28T01:13:23+05:30",
-          "message": "Phase 2 implemented",
-          "url": "https://github.com/shaaravraghu/Veda-AI_NSRCEL-IIMB/commit/79c9944b3f1992a7e4fef7d509934dc05b480d1b"
+          "sha": "444f7ebab42f919cefa30122d9ee7405028f0d36",
+          "repository": "Weekly_Tasks_Nihar",
+          "timestamp": "2026-05-29T23:34:45+05:30",
+          "message": "Update May.txt",
+          "url": "https://github.com/shaaravraghu/Weekly_Tasks_Nihar/commit/444f7ebab42f919cefa30122d9ee7405028f0d36"
         },
         {
-          "sha": "062cb4eef6e23b7f75484a696481bbcf705856d6",
-          "repository": "Veda-AI_NSRCEL-IIMB",
-          "timestamp": "2026-05-28T12:22:21+05:30",
-          "message": "Implement phase 3 admin dashboard and observability",
-          "url": "https://github.com/shaaravraghu/Veda-AI_NSRCEL-IIMB/commit/062cb4eef6e23b7f75484a696481bbcf705856d6"
-        },
-        {
-          "sha": "16ecaf84c0734f895cc182547b1b90e2c9a08d12",
-          "repository": "Veda-AI_NSRCEL-IIMB",
-          "timestamp": "2026-05-28T12:24:49+05:30",
-          "message": "Merge pull request #2 from shaaravraghu/codex/phase-3-admin-observability",
-          "url": "https://github.com/shaaravraghu/Veda-AI_NSRCEL-IIMB/commit/16ecaf84c0734f895cc182547b1b90e2c9a08d12"
+          "sha": "f7f061e5dc0d2d90984b17faeb93d37beb8937bb",
+          "repository": "GitHub_Guide",
+          "timestamp": "2026-05-30T00:32:31+05:30",
+          "message": "Add note on deleting branch after PR review",
+          "url": "https://github.com/shaaravraghu/GitHub_Guide/commit/f7f061e5dc0d2d90984b17faeb93d37beb8937bb"
         }
       ],
       "2026-W23": [
@@ -1140,6 +1151,59 @@
           "timestamp": "2026-07-07T20:24:58+05:30",
           "message": "Update Novel.tex",
           "url": "https://github.com/shaaravraghu/Dvi/commit/9129dd3636ca10c072a0a077a699c267d4aee0a6"
+        },
+        {
+          "sha": "f95542742f161bbf69bc1739737ec42d752940c0",
+          "repository": "Dvi",
+          "timestamp": "2026-07-08T13:18:57+05:30",
+          "message": "Update Novel.tex",
+          "url": "https://github.com/shaaravraghu/Dvi/commit/f95542742f161bbf69bc1739737ec42d752940c0"
+        }
+      ],
+      "2026-W29": [
+        {
+          "sha": "92e6f8189ab970c6575010a9cd69e671c766c6a6",
+          "repository": "Notepad",
+          "timestamp": "2026-07-13T20:03:07+05:30",
+          "message": "Add resume requirements and sections",
+          "url": "https://github.com/shaaravraghu/Notepad/commit/92e6f8189ab970c6575010a9cd69e671c766c6a6"
+        },
+        {
+          "sha": "aef0d78b501d46eb1e72f5050224c648bba8981b",
+          "repository": "Notepad",
+          "timestamp": "2026-07-14T22:57:41+05:30",
+          "message": "Update Resume_Requirements.txt",
+          "url": "https://github.com/shaaravraghu/Notepad/commit/aef0d78b501d46eb1e72f5050224c648bba8981b"
+        },
+        {
+          "sha": "66f44b4723cf28561a01bee166a711b23593123f",
+          "repository": "Dvi",
+          "timestamp": "2026-07-15T19:57:11+05:30",
+          "message": "Update Novel.tex",
+          "url": "https://github.com/shaaravraghu/Dvi/commit/66f44b4723cf28561a01bee166a711b23593123f"
+        }
+      ],
+      "2026-W30": [
+        {
+          "sha": "c008a5ba1201a0a39cb81579f122a2f111100edb",
+          "repository": "shaaravraghu",
+          "timestamp": "2026-07-20T02:53:15+05:30",
+          "message": "Update README.md with GitHub stats images",
+          "url": "https://github.com/shaaravraghu/shaaravraghu/commit/c008a5ba1201a0a39cb81579f122a2f111100edb"
+        },
+        {
+          "sha": "8876a0d5d4b7c39a0f5d884e5e9bfcc47518bbaa",
+          "repository": "Dvi",
+          "timestamp": "2026-07-21T03:20:12+05:30",
+          "message": "Update font stack in Novel.tex per editorial brief",
+          "url": "https://github.com/shaaravraghu/Dvi/commit/8876a0d5d4b7c39a0f5d884e5e9bfcc47518bbaa"
+        },
+        {
+          "sha": "87b7258eb37d1e2d1c692d22e7905d93d414ebc9",
+          "repository": "Dvi",
+          "timestamp": "2026-07-22T15:15:53+05:30",
+          "message": "Expand README header with additional lines",
+          "url": "https://github.com/shaaravraghu/Dvi/commit/87b7258eb37d1e2d1c692d22e7905d93d414ebc9"
         }
       ]
     }
@@ -1148,9 +1212,9 @@
     "period_days": 90,
     "bucket_minutes": 5,
     "total_buckets": 25920,
-    "active_buckets": 92,
+    "active_buckets": 128,
     "max_commits_in_5min": 8,
-    "average_commits_per_active_bucket": 1.45,
+    "average_commits_per_active_bucket": 1.44,
     "top_bursts": [
       {
         "timestamp": "2026-06-01T17:55:00+05:30",
@@ -1158,6 +1222,10 @@
       },
       {
         "timestamp": "2026-06-02T22:50:00+05:30",
+        "commits": 6
+      },
+      {
+        "timestamp": "2026-07-22T22:35:00+05:30",
         "commits": 6
       },
       {
@@ -1187,10 +1255,6 @@
       {
         "timestamp": "2026-06-29T13:50:00+05:30",
         "commits": 3
-      },
-      {
-        "timestamp": "2026-05-28T12:20:00+05:30",
-        "commits": 2
       }
     ]
   }
