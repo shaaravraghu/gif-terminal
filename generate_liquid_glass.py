@@ -84,7 +84,7 @@ ConvertAnsiEscape.ANSI_ESCAPE_MAP_TXT_COLOR.update({
 # ============================================
 
 # ---- Layout constants ----
-GIF_W, GIF_H = 780, 550
+GIF_W, GIF_H = 700, 520
 WIN_X, WIN_Y = 1, 1
 WIN_W = 738
 TITLE_H = 30
